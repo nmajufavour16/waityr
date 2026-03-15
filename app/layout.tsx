@@ -4,7 +4,7 @@ import './globals.css';
 export const metadata: Metadata = {
   title: 'Waityr — Something is coming.',
   description:
-    'Get in line. A waitlist for something. We're not ready to share what it is yet. This is standard practice.',
+    "Get in line. A waitlist for something. We're not ready to share what it is yet. This is standard practice.",
   openGraph: {
     title: 'Waityr — Something is coming.',
     description: 'Get in line.',
