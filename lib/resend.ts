@@ -2,7 +2,7 @@ import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const FROM = 'Waityr <noreply@waityr.com>';
+const FROM = 'Waityr <onboarding@resend.dev>';
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'https://waityr.com';
 
 function baseEmailHtml(body: string): string {
