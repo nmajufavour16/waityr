@@ -2,15 +2,5 @@
   "framework": "nextjs",
   "buildCommand": "next build",
   "devCommand": "next dev",
-  "installCommand": "npm install",
-  "regions": ["iad1"],
-  "env": {
-    "NEXT_PUBLIC_SUPABASE_URL": "@next_public_supabase_url",
-    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "@next_public_supabase_anon_key",
-    "SUPABASE_SERVICE_ROLE_KEY": "@supabase_service_role_key",
-    "PAYSTACK_SECRET_KEY": "@paystack_secret_key",
-    "NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY": "@next_public_paystack_public_key",
-    "RESEND_API_KEY": "@resend_api_key",
-    "NEXT_PUBLIC_APP_URL": "@next_public_app_url"
-  }
+  "installCommand": "npm install"
 }
