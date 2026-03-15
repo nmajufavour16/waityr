@@ -2,39 +2,31 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Waityr — Something is coming.',
+  title: 'Waityr — Queue up. The race for #1 starts now.',
   description:
-    "Get in line. A waitlist for something. We're not ready to share what it is yet. This is standard practice.",
+    "A live, competitive waitlist. Your position changes. The race for #1 is real. We're not ready to announce the product yet. This is standard practice.",
   openGraph: {
-    title: 'Waityr — Something is coming.',
-    description: 'Get in line.',
-    url: 'https://waityr.com',
+    title: 'Waityr — Queue up. The race for #1 starts now.',
+    description: "A live, competitive waitlist. Something is coming.",
+    url: 'https://waityr.vercel.app',
     siteName: 'Waityr',
     type: 'website',
   },
   twitter: {
     card: 'summary',
-    title: 'Waityr — Something is coming.',
-    description: 'Get in line.',
+    title: 'Waityr',
+    description: "Queue up. The race for #1 starts now.",
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
           rel="stylesheet"
         />
       </head>
