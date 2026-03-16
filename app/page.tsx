@@ -84,7 +84,7 @@ export default async function HomePage({ searchParams }: Props) {
                   <span className="text-xs font-medium text-[#374151]">Now live &mdash; accepting Waityrs globally</span>
                 </div>
 
-                <h1 className="text-[36px] sm:text-[48px] lg:text-[56px] font-semibold text-[#0A0A0A] leading-[1.02] tracking-tight anim-fade-up delay-1 mx-auto font-display">
+                <h1 className="text-[44px] sm:text-[60px] lg:text-[68px] font-semibold text-[#0A0A0A] leading-[1.02] tracking-tight anim-fade-up delay-1 mx-auto font-display">
                   Something is<br />coming.{' '}
                   <span className="text-[#0D9488]"><em>Get in line.</em></span>
                 </h1>
