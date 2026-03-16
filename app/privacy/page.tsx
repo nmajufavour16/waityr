@@ -18,7 +18,7 @@ export default function PrivacyPage() {
 
       <main className="max-w-2xl mx-auto px-6 py-16 sm:py-24">
         <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#9CA3AF] mb-4">Legal</p>
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-[#0A0A0A] tracking-tight mb-3">Privacy Policy</h1>
+        <h1 className="text-3xl sm:text-4xl font-semibold text-[#0A0A0A] tracking-tight mb-3 font-display">Privacy Policy</h1>
         <p className="text-sm text-[#9CA3AF] mb-12">Last updated: March 2026. This is the most straightforward privacy policy you will ever read.</p>
 
         <div className="legal-body space-y-2">
