@@ -126,10 +126,10 @@ export default async function HomePage({ searchParams }: Props) {
         {/* ── How it works ─────────────────────────────────────────────── */}
         <section id="how-it-works" className="border-t border-gray-100 py-24">
           <div className="max-w-6xl mx-auto px-6">
-            <div className="max-w-lg mb-14">
+            <div className="text-center mb-14">
               <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#9CA3AF] mb-3">How it works</p>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0A0A0A] tracking-tight">
-                Three steps.<br />Infinite competition.
+                Three steps. Infinite competition.
               </h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 lg:gap-10">
@@ -154,7 +154,7 @@ export default async function HomePage({ searchParams }: Props) {
         {/* ── What you get ─────────────────────────────────────────────── */}
         <section className="border-t border-gray-100 py-24 bg-gray-50/60">
           <div className="max-w-6xl mx-auto px-6">
-            <div className="max-w-xl mb-14">
+            <div className="text-center mb-14">
               <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#9CA3AF] mb-3">What every Waityr gets</p>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0A0A0A] tracking-tight">
                 Everything included.
@@ -188,7 +188,7 @@ export default async function HomePage({ searchParams }: Props) {
               <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0A0A0A] tracking-tight mb-2">Simple pricing.</h2>
               <p className="text-[#6B7280] text-lg">You probably shouldn&apos;t. But Waityrs do. They always do.</p>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-3xl">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-3xl mx-auto">
 
               <div className="card-hover border border-gray-200 rounded-2xl p-6 bg-white flex flex-col">
                 <div className="mb-5">
@@ -247,7 +247,7 @@ export default async function HomePage({ searchParams }: Props) {
                 <div className="border border-gray-200 rounded-xl py-2.5 text-center text-sm font-medium text-[#0A0A0A]">I Want #1 — $3</div>
               </div>
             </div>
-            <p className="mt-6 text-[11px] text-[#9CA3AF] max-w-md leading-relaxed">
+            <p className="mt-6 text-[11px] text-[#9CA3AF] max-w-md leading-relaxed mx-auto text-center">
               Payments move your Waityr position only. The waitlist is the product.
             </p>
           </div>
@@ -256,7 +256,7 @@ export default async function HomePage({ searchParams }: Props) {
         {/* ── Testimonials ─────────────────────────────────────────────── */}
         <section className="border-t border-gray-100 py-24 bg-gray-50/60">
           <div className="max-w-6xl mx-auto px-6">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#9CA3AF] mb-14">What Waityrs are saying</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#9CA3AF] mb-14 text-center">What Waityrs are saying</p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
               {[
                 { quote: 'I joined the list. I received a number. The number was real. I have no further comments.', name: 'A. Okafor', handle: 'Waityr. Currently waiting.' },
@@ -279,8 +279,8 @@ export default async function HomePage({ searchParams }: Props) {
         <section className="border-t border-gray-100 py-24">
           <div className="max-w-6xl mx-auto px-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-              <div>
-                <div className="flex items-center gap-3 mb-3">
+              <div className="text-center lg:text-left">
+                <div className="flex items-center gap-3 mb-3 justify-center lg:justify-start">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#9CA3AF]">Live activity</p>
                   <span className="pulse-dot" />
                 </div>
@@ -288,7 +288,7 @@ export default async function HomePage({ searchParams }: Props) {
                   The queue is moving.<br />
                   <span className="text-[#0D9488]">Right now.</span>
                 </h2>
-                <p className="text-sm text-[#6B7280] leading-relaxed max-w-sm">
+                <p className="text-sm text-[#6B7280] leading-relaxed max-w-sm mx-auto lg:mx-0">
                   Every join, every bump, every Waityr who just paid to become #1 —
                   all of it, live. Tap the top card to cycle through.
                 </p>
@@ -305,8 +305,8 @@ export default async function HomePage({ searchParams }: Props) {
         {/* ── FAQ ──────────────────────────────────────────────────────── */}
         <section id="faq" className="border-t border-gray-100 py-24 bg-gray-50/60">
           <div className="max-w-6xl mx-auto px-6">
-            <div className="max-w-2xl">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#9CA3AF] mb-6">FAQ</p>
+            <div className="max-w-2xl mx-auto">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#9CA3AF] mb-6 text-center">FAQ</p>
               <FAQ />
             </div>
           </div>
