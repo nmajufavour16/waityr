@@ -1,66 +1,113 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,600;1,600&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ── Tokens ──────────────────────────────────────────────────── */
 :root {
   --teal: #0D9488;
   --teal-dark: #0f766e;
-  --teal-muted: rgba(13, 148, 136, 0.08);
+  --teal-glow: rgba(13, 148, 136, 0.15);
   --black: #0A0A0A;
-  --gray-mid: #6B7280;
   --border: #E5E7EB;
 }
 
 * { box-sizing: border-box; }
 
 html {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
 }
 
-body {
-  background: #ffffff;
-  color: #0A0A0A;
-  margin: 0;
-  padding: 0;
-}
+body { background: #fff; color: #0A0A0A; margin: 0; padding: 0; }
 
-/* Hero background — subtle radial teal glow */
+/* ── Hero radial glow ────────────────────────────────────────── */
 .hero-bg {
   background:
-    radial-gradient(ellipse 70% 50% at 60% -10%, rgba(13,148,136,0.07) 0%, transparent 65%),
-    radial-gradient(ellipse 40% 30% at 5% 80%, rgba(13,148,136,0.04) 0%, transparent 60%);
+    radial-gradient(ellipse 80% 60% at 65% -15%, rgba(13,148,136,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 10% 90%, rgba(13,148,136,0.05) 0%, transparent 55%);
 }
 
-/* Card hover */
-.card-hover {
-  transition: transform 180ms ease, box-shadow 180ms ease;
+/* ── Page reveal ─────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-.card-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: scale(1); }
 }
 
-/* Count-up animation */
+.anim-fade-up   { animation: fadeUp  0.55s cubic-bezier(0.22,1,0.36,1) both; }
+.anim-fade-in   { animation: fadeIn  0.45s ease both; }
+.anim-scale-in  { animation: scaleIn 0.5s  cubic-bezier(0.22,1,0.36,1) both; }
+
+.delay-1  { animation-delay: 0.05s; }
+.delay-2  { animation-delay: 0.10s; }
+.delay-3  { animation-delay: 0.18s; }
+.delay-4  { animation-delay: 0.26s; }
+.delay-5  { animation-delay: 0.36s; }
+.delay-6  { animation-delay: 0.46s; }
+
+/* ── Feed item entrance ──────────────────────────────────────── */
+@keyframes feedIn {
+  from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.animate-feed-item { animation: feedIn 0.3s cubic-bezier(0.22,1,0.36,1) forwards; }
+
+/* ── Card stack animations ───────────────────────────────────── */
+@keyframes cardToBack {
+  0%   { transform: var(--card-transform) scale(1); opacity: 1; z-index: 10; }
+  40%  { transform: translateY(-24px) scale(1.02); opacity: 0.8; z-index: 10; }
+  100% { transform: var(--card-back-transform); opacity: 0.6; z-index: 1; }
+}
+@keyframes cardShiftUp {
+  from { transform: var(--card-from); }
+  to   { transform: var(--card-to); }
+}
+
+/* ── Count-up ────────────────────────────────────────────────── */
 @keyframes countUp {
   from { opacity: 0; transform: translateY(6px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-4px); }
-  to   { opacity: 1; transform: translateY(0); }
+.animate-count-up { animation: countUp 0.1s ease-out forwards; }
+
+/* ── Card hover lift ─────────────────────────────────────────── */
+.card-hover {
+  transition: transform 200ms cubic-bezier(0.22,1,0.36,1), box-shadow 200ms ease;
+  will-change: transform;
+}
+.card-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.07);
 }
 
-.animate-count-up { animation: countUp 0.1s ease-out forwards; }
-.animate-feed-item { animation: fadeIn 0.3s ease-out forwards; }
+/* ── Glassmorphism card ──────────────────────────────────────── */
+.glass-card {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.06),
+    0 1px 4px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
 
-/* Skeleton */
+/* ── Skeleton ────────────────────────────────────────────────── */
 @keyframes shimmer {
   0%   { background-position: -400px 0; }
-  100% { background-position: 400px 0; }
+  100% { background-position:  400px 0; }
 }
 .skeleton {
   background: linear-gradient(90deg, #f3f4f6 25%, #e9eaec 50%, #f3f4f6 75%);
@@ -69,43 +116,75 @@ body {
   border-radius: 4px;
 }
 
-/* Pulse dot */
+/* ── Pulse dot ───────────────────────────────────────────────── */
 @keyframes pulse-ring {
-  0%   { transform: scale(1); opacity: 1; }
-  60%  { transform: scale(1.8); opacity: 0; }
-  100% { transform: scale(1); opacity: 0; }
+  0%   { transform: scale(1);   opacity: 1; }
+  70%  { transform: scale(2.2); opacity: 0; }
+  100% { transform: scale(1);   opacity: 0; }
 }
 .pulse-dot {
   position: relative;
   display: inline-block;
-  width: 8px;
-  height: 8px;
+  width: 8px; height: 8px;
+  flex-shrink: 0;
 }
 .pulse-dot::before {
   content: '';
-  position: absolute;
-  inset: 0;
+  position: absolute; inset: 0;
   border-radius: 50%;
   background: #0D9488;
   animation: pulse-ring 2s ease-out infinite;
 }
 .pulse-dot::after {
   content: '';
-  position: absolute;
-  inset: 1px;
+  position: absolute; inset: 1.5px;
   border-radius: 50%;
   background: #0D9488;
 }
 
-/* Step connector line */
-.step-line {
-  position: absolute;
-  left: 19px;
-  top: 40px;
-  width: 2px;
-  height: calc(100% - 16px);
-  background: linear-gradient(to bottom, #e5e7eb, transparent);
+/* ── Toast ───────────────────────────────────────────────────── */
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes toastOut {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to   { opacity: 0; transform: translateY(8px) scale(0.95); }
+}
+.toast-in  { animation: toastIn  0.35s cubic-bezier(0.22,1,0.36,1) forwards; }
+.toast-out { animation: toastOut 0.25s ease-in forwards; }
+
+/* ── Teal button glow on hover ──────────────────────────────── */
+.btn-teal {
+  transition: background 180ms ease, box-shadow 180ms ease, transform 120ms ease;
+}
+.btn-teal:hover {
+  box-shadow: 0 0 0 4px rgba(13,148,136,0.15);
+  transform: translateY(-1px);
+}
+.btn-teal:active { transform: translateY(0); }
+
+/* ── Section fade-in on scroll (JS-free via CSS) ────────────── */
+@supports (animation-timeline: scroll()) {
+  .scroll-reveal {
+    animation: fadeUp linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 25%;
+  }
 }
 
-details summary { list-style: none; cursor: pointer; }
-details summary::-webkit-details-marker { display: none; }
+/* ── Legal page ──────────────────────────────────────────────── */
+.legal-body h2   { font-size: 1.1rem; font-weight: 700; margin: 2rem 0 0.5rem; color: #0A0A0A; }
+.legal-body p    { color: #4B5563; line-height: 1.75; margin-bottom: 1rem; font-size: 0.9375rem; }
+.legal-body ul   { list-style: none; padding: 0; margin-bottom: 1rem; }
+.legal-body ul li { color: #4B5563; font-size: 0.9375rem; padding: 0.25rem 0 0.25rem 1.2rem; position: relative; line-height: 1.7; }
+.legal-body ul li::before { content: '—'; position: absolute; left: 0; color: #D1D5DB; }
+.legal-body strong { color: #0A0A0A; font-weight: 600; }
+.legal-body .callout {
+  border-left: 3px solid #0D9488;
+  padding: 1rem 1.25rem;
+  background: rgba(13,148,136,0.04);
+  border-radius: 0 8px 8px 0;
+  margin: 1.5rem 0;
+}
+.legal-body .callout p { margin: 0; color: #374151; font-style: italic; }
