@@ -28,24 +28,31 @@ export default async function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Nav — identical to landing page */}
       <nav className="sticky top-0 z-40 bg-white/90 backdrop-blur-sm border-b border-gray-100">
-        <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
           <Link href="/"><Logo size="md" /></Link>
-          <div className="flex items-center gap-2">
-            <a href="/#pricing" className="text-sm text-[#6B7280] hover:text-[#0A0A0A] transition-colors px-3 py-1.5 rounded-lg hover:bg-gray-50 hidden sm:block">
-              Pricing
-            </a>
-            <Link href="/#join" className="text-sm font-semibold bg-[#0A0A0A] hover:bg-[#1a1a1a] text-white transition-colors px-4 py-1.5 rounded-lg">
-              Get in line
-            </Link>
-          </div>
+          {/* Sign out only — no "Get in line" clutter */}
+          <DashboardSignOut />
         </div>
       </nav>
 
-      <main className="max-w-5xl mx-auto px-6 py-10">
+      <main className="max-w-6xl mx-auto px-6 py-10">
         <DashboardClient entry={entry} initialFeedItems={feedItems ?? []} />
       </main>
     </div>
+  );
+}
+
+// Thin server-renderable wrapper — actual sign-out logic is in DashboardClient
+function DashboardSignOut() {
+  return (
+    <form action="/api/auth/signout" method="POST">
+      <button
+        type="submit"
+        className="flex items-center gap-1.5 text-sm text-[#9CA3AF] hover:text-[#0A0A0A] transition-colors px-3 py-1.5 rounded-lg hover:bg-gray-50"
+      >
+        Sign out
+      </button>
+    </form>
   );
 }
