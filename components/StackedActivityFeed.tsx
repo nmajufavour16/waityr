@@ -181,4 +181,4 @@ export default function StackedActivityFeed({ initialItems = [] }: Props) {
       )}
     </div>
   );
-    }
+}
