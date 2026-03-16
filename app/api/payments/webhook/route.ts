@@ -3,7 +3,7 @@ import crypto from 'crypto';
 import { createServerClient } from '@/lib/supabase';
 import { performPositionMove, randomBetween } from '@/lib/positions';
 import { refundTransaction } from '@/lib/paystack';
-import { sendDisplacedFromTopEmail } from '@/lib/resend';
+import { sendDisplacedFromTopEmail } from '@/lib/email';
 
 export const runtime = 'nodejs';
 
