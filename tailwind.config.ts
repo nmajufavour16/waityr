@@ -9,7 +9,10 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        // Body — Plus Jakarta Sans
+        sans: ['"DM Sans"', 'system-ui', 'sans-serif'],
+        // Headings — Poppins
+        display: ['Poppins', 'system-ui', 'sans-serif'],
       },
       colors: {
         teal: {
