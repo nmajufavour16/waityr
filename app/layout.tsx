@@ -2,20 +2,20 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Waityr — Get in Line!',
+  title: 'Waityr — Something is coming.',
   description:
-    "A waitlist for something. We're not ready to share what it is yet. Something is coming.",
+    "Get in line. A waitlist for something. We're not ready to share what it is yet. This is standard practice.",
   openGraph: {
-    title: 'Waityr — Get in Line!',
-    description: "A live, competitive waitlist. Something is coming.",
+    title: 'Waityr — Something is coming.',
+    description: "Get in line. A waitlist for something.",
     url: 'https://waityr.vercel.app',
     siteName: 'Waityr',
     type: 'website',
   },
   twitter: {
     card: 'summary',
-    title: 'Waityr',
-    description: "Queue up. The race for #1 starts now.",
+    title: 'Waityr — Something is coming.',
+    description: "Get in line.",
   },
 };
 
@@ -25,8 +25,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* Poppins — headings */}
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;1,600&display=swap"
+          rel="stylesheet"
+        />
+        {/* DM Sans — body */}
+        <link
+          href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap"
           rel="stylesheet"
         />
       </head>
