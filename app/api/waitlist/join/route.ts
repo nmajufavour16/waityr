@@ -1,17 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@/lib/supabase';
 import { maskEmail } from '@/lib/positions';
-import { sendConfirmationEmail } from '@/lib/resend';
+import { sendConfirmationEmail } from '@/lib/email';
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { email, referral_code } = body as {
-      email: string;
-      referral_code?: string;
-    };
+    const { email, referral_code } = body as { email: string; referral_code?: string };
 
-    // Validate email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email || !emailRegex.test(email)) {
       return NextResponse.json({ error: 'Invalid email address.' }, { status: 400 });
@@ -19,7 +15,6 @@ export async function POST(req: NextRequest) {
 
     const supabase = createServerClient();
 
-    // Check for existing entry
     const { data: existing } = await supabase
       .from('waitlist_entries')
       .select('id, email, position')
@@ -30,7 +25,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ already_exists: true }, { status: 200 });
     }
 
-    // Use atomic RPC to join
     const { data: result, error: rpcError } = await supabase.rpc('join_waitlist', {
       p_email: email.toLowerCase().trim(),
       p_referral_code: referral_code ?? null,
@@ -47,7 +41,6 @@ export async function POST(req: NextRequest) {
     const confirmationToken: string = row.new_confirmation_token;
     const referrerId: string | null = row.referrer_id;
 
-    // Log joined event
     await supabase.from('activity_feed').insert({
       event_type: 'joined',
       entry_id: newId,
@@ -55,7 +48,6 @@ export async function POST(req: NextRequest) {
       display_text: `${maskEmail(email)} joined the list. They are #${newPosition}.`,
     });
 
-    // Log referral bump if applicable
     if (referrerId && row.referrer_position) {
       const newReferrerPos = row.referrer_position - 1;
       await supabase.from('activity_feed').insert({
@@ -67,17 +59,10 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // Send confirmation email (non-blocking)
-    sendConfirmationEmail({
-      to: email,
-      position: newPosition,
-      confirmationToken,
-    }).catch((err) => console.error('Email send failed:', err));
+    sendConfirmationEmail({ to: email, position: newPosition, confirmationToken })
+      .catch((err) => console.error('Email send failed:', err));
 
-    return NextResponse.json({
-      position: newPosition,
-      entry_id: newId,
-    });
+    return NextResponse.json({ position: newPosition, entry_id: newId });
   } catch (err) {
     console.error('Join error:', err);
     return NextResponse.json({ error: 'Internal server error.' }, { status: 500 });
