@@ -250,7 +250,7 @@ export default function DashboardClient({ entry, initialFeedItems }: Props) {
         {/* Header row */}
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-extrabold text-[#0A0A0A] tracking-tight font-display">Your spot.</h1>
+            <h1 className="text-2xl font-semibold text-[#0A0A0A] tracking-tight font-display">Your spot.</h1>
             <p className="text-sm text-[#6B7280] mt-1">{entry.email}</p>
           </div>
           <button
