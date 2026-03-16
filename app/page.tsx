@@ -84,7 +84,7 @@ export default async function HomePage({ searchParams }: Props) {
                   <span className="text-xs font-medium text-[#374151]">Now live &mdash; accepting Waityrs globally</span>
                 </div>
 
-                <h1 className="text-[44px] sm:text-[60px] lg:text-[68px] font-extrabold text-[#0A0A0A] leading-[1.02] tracking-tight anim-fade-up delay-1 mx-auto font-display">
+                <h1 className="text-[44px] sm:text-[60px] lg:text-[68px] font-bold text-[#0A0A0A] leading-[1.02] tracking-tight anim-fade-up delay-1 mx-auto font-display">
                   Something is<br />coming.{' '}
                   <span className="text-[#0D9488]"><em>Get in line.</em></span>
                 </h1>
@@ -128,7 +128,7 @@ export default async function HomePage({ searchParams }: Props) {
           <div className="max-w-6xl mx-auto px-6">
             <div className="text-center mb-14">
               <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#9CA3AF] mb-3">How it works</p>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0A0A0A] tracking-tight font-display">
+              <h2 className="text-3xl sm:text-4xl font-semibold text-[#0A0A0A] tracking-tight font-display">
                 Three steps. Infinite competition.
               </h2>
             </div>
@@ -156,7 +156,7 @@ export default async function HomePage({ searchParams }: Props) {
           <div className="max-w-6xl mx-auto px-6">
             <div className="text-center mb-14">
               <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#9CA3AF] mb-3">What every Waityr gets</p>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0A0A0A] tracking-tight font-display">
+              <h2 className="text-3xl sm:text-4xl font-semibold text-[#0A0A0A] tracking-tight font-display">
                 Everything included.
               </h2>
               <p className="text-[#6B7280] mt-3 text-lg">Which is a number, some competition, and a referral link.</p>
@@ -185,7 +185,7 @@ export default async function HomePage({ searchParams }: Props) {
           <div className="max-w-6xl mx-auto px-6">
             <div className="max-w-lg mb-14">
               <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#9CA3AF] mb-3">Move up</p>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-[#0A0A0A] tracking-tight mb-2 font-display">Simple pricing.</h2>
+              <h2 className="text-3xl sm:text-4xl font-semibold text-[#0A0A0A] tracking-tight mb-2 font-display">Simple pricing.</h2>
               <p className="text-[#6B7280] text-lg">You probably shouldn&apos;t. But Waityrs do. They always do.</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-3xl mx-auto">
@@ -284,7 +284,7 @@ export default async function HomePage({ searchParams }: Props) {
                   <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#9CA3AF]">Live activity</p>
                   <span className="pulse-dot" />
                 </div>
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-[#0A0A0A] tracking-tight mb-3 font-display">
+                <h2 className="text-2xl sm:text-3xl font-semibold text-[#0A0A0A] tracking-tight mb-3 font-display">
                   The queue is moving.<br />
                   <span className="text-[#0D9488]">Right now.</span>
                 </h2>
@@ -315,7 +315,7 @@ export default async function HomePage({ searchParams }: Props) {
         {/* ── Final CTA ────────────────────────────────────────────────── */}
         <section className="border-t border-gray-100 py-28">
           <div className="max-w-6xl mx-auto px-6 text-center">
-            <h2 className="text-3xl sm:text-5xl font-extrabold text-[#0A0A0A] tracking-tight mb-4 leading-tight font-display">
+            <h2 className="text-3xl sm:text-5xl font-bold text-[#0A0A0A] tracking-tight mb-4 leading-tight font-display">
               Get in line.<br />
               <span className="text-[#0D9488]">The queue is already moving.</span>
             </h2>
