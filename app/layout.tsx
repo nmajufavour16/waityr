@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Waityr — Queue up. The race for #1 starts now.',
+  title: 'Waityr — Get in Line!',
   description:
-    "A live, competitive waitlist. Your position changes. The race for #1 is real. We're not ready to announce the product yet. This is standard practice.",
+    "A waitlist for something. We're not ready to share what it is yet. Something is coming.",
   openGraph: {
-    title: 'Waityr — Queue up. The race for #1 starts now.',
+    title: 'Waityr — Get in Line!',
     description: "A live, competitive waitlist. Something is coming.",
     url: 'https://waityr.vercel.app',
     siteName: 'Waityr',
