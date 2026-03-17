@@ -2,11 +2,11 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Waityr — Something is coming.',
+  title: 'Waityr — Queue as a Service.',
   description:
-    "Get in line. A waitlist for something. We're not ready to share what it is yet. This is standard practice.",
+    "Get in line. A waitlist for something.",
   openGraph: {
-    title: 'Waityr — Something is coming.',
+    title: 'Waityr — Queue as a Service.',
     description: "Get in line. A waitlist for something.",
     url: 'https://waityr.vercel.app',
     siteName: 'Waityr',
@@ -14,8 +14,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary',
-    title: 'Waityr — Something is coming.',
-    description: "Get in line.",
+    title: 'Waityr — Queue as a Service.',
+    description: "Get in line. A waitlist for something.",
   },
 };
 
