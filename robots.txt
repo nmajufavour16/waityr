@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://waityr.vercel.app/sitemap.xml
