@@ -16,6 +16,7 @@ export const metadata: Metadata = {
     card: 'summary',
     title: 'Waityr — Queue as a Service.',
     description: "Get in line. A waitlist for something.",
+  },
   verification: {
     google: 'zy6RrKC1-qHSR4tunhNMhJ92mZ37PM3bS4ehflbSAZI',
   },
