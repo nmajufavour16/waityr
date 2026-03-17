@@ -2,12 +2,12 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Waityr — Something is coming.',
+  title: 'Waityr — Queue as a Service',
   description:
-    "Get in line. A waitlist for something. We're not ready to share what it is yet. This is standard practice.",
+    "A waitlist for something. Get in line.",
   openGraph: {
-    title: 'Waityr — Something is coming.',
-    description: "Get in line. A waitlist for something. We're not ready to share what it is yet.",
+    title: 'Waityr — Queue as a Service',
+    description: "A waitlist for something. Get in line.",
     url: 'https://waityr.vercel.app',
     siteName: 'Waityr',
     type: 'website',
@@ -16,14 +16,14 @@ export const metadata: Metadata = {
         url: 'https://waityr.vercel.app/logo.png',
         width: 1080,
         height: 1080,
-        alt: 'Waityr — Something is coming.',
+        alt: 'Waityr — Queue as a Service',
       },
     ],
   },
   twitter: {
     card: 'summary',
-    title: 'Waityr — Something is coming.',
-    description: "Get in line.",
+    title: 'Waityr — Queue as a Service',
+    description: "A waitlist for something. Get in line.",
     images: ['https://waityr.vercel.app/logo.png'],
   },
   verification: {
