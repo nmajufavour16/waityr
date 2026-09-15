@@ -47,7 +47,7 @@ GMAIL_APP_PASSWORD=your_app_password
 
 1. Create a PostgreSQL database (locally or use a cloud provider like Neon/Aiven).
 2. Ensure your `DATABASE_URL` is set in your `.env` file.
-3. Run the schema setup script: `node --env-file=.env setup-db.js`
+3. Paste and run the contents of `schema.sql` or Run the schema setup script: `node --env-file=.env setup-db.js`
 
 ### 4. Paystack setup
 
