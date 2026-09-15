@@ -25,23 +25,23 @@ function base(body: string): string {
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,600;1,600&family=DM+Sans:wght@400;500;600;700&display=swap');
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif; background: #ffffff; -webkit-font-smoothing: antialiased; }
+    body { font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif; background: #f3f4f6; -webkit-font-smoothing: antialiased; }
     .outer { padding: 40px 16px; }
-    .card { max-width: 540px; margin: 0 auto; background: #ffffff; }
-    .header { padding: 0 0 32px 0; border-bottom: 1px solid #f3f4f6; margin-bottom: 32px; text-align: center; }
-    .logo { font-family: 'Poppins', sans-serif; color: #0a0a0a; font-size: 24px; font-weight: 600; letter-spacing: -0.04em; text-decoration: none; }
+    .card { max-width: 540px; margin: 0 auto; background: #ffffff; border-radius: 16px; overflow: hidden; border: 1px solid #e5e7eb; }
+    .header { background: #0a0a0a; padding: 24px 36px; text-align: left; }
+    .logo { font-family: 'Poppins', sans-serif; color: #ffffff; font-size: 24px; font-weight: 600; letter-spacing: -0.04em; text-decoration: none; }
     .logo-y { font-style: italic; }
-    .body { padding: 0; text-align: center; }
+    .body { padding: 40px 36px 32px; text-align: left; }
     .position-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #9ca3af; margin-bottom: 12px; }
-    .position { font-family: 'Poppins', sans-serif; font-size: 96px; font-weight: 600; color: #0d9488; line-height: 1; letter-spacing: -0.04em; margin-bottom: 24px; }
+    .position { font-family: 'Poppins', sans-serif; font-size: 88px; font-weight: 600; color: #0d9488; line-height: 1; letter-spacing: -0.04em; margin-bottom: 24px; }
     .headline { font-family: 'Poppins', sans-serif; font-size: 22px; font-weight: 600; color: #0a0a0a; line-height: 1.3; margin-bottom: 16px; letter-spacing: -0.02em; }
-    .body-text { font-size: 15px; color: #6b7280; line-height: 1.7; margin-bottom: 32px; text-align: left; }
+    .body-text { font-size: 15px; color: #6b7280; line-height: 1.7; margin-bottom: 32px; }
     .body-text strong { color: #0a0a0a; font-weight: 600; }
     .btn { display: inline-block; background: #0d9488; color: #ffffff !important; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-weight: 600; font-size: 15px; }
-    .meta { margin-top: 40px; padding-top: 24px; border-top: 1px solid #f3f4f6; text-align: left; }
+    .meta { margin-top: 32px; padding-top: 24px; border-top: 1px solid #f3f4f6; }
     .meta p { font-size: 13px; color: #9ca3af; line-height: 1.6; }
     .meta a { color: #0d9488; text-decoration: underline; text-underline-offset: 2px; }
-    .footer { margin-top: 40px; padding-top: 24px; border-top: 1px solid #f3f4f6; text-align: center; }
+    .footer { background: #f9fafb; border-top: 1px solid #f3f4f6; padding: 24px 36px; text-align: center; }
     .footer p { font-size: 12px; color: #9ca3af; line-height: 1.6; }
     .footer a { color: #6b7280; text-decoration: none; }
   </style>
@@ -50,7 +50,7 @@ function base(body: string): string {
   <div class="outer">
     <div class="card">
       <div class="header">
-        <a href="${APP_URL}" class="logo">Wait<span class="logo-y">y</span>r</a>
+        <a href="${APP_URL}" class="logo" style="color: #ffffff; text-decoration: none;">Wait<span class="logo-y">y</span>r</a>
       </div>
       <div class="body">
         ${body}
