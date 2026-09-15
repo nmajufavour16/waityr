@@ -45,9 +45,9 @@ GMAIL_APP_PASSWORD=your_app_password
 
 ### 3. Database setup (PostgreSQL)
 
-1. Create a local PostgreSQL database (or use a provider like Neon/Render).
-2. Open your SQL client and connect to the database.
-3. Paste and run the contents of `schema.sql`.
+1. Create a PostgreSQL database (locally or use a cloud provider like Neon/Aiven).
+2. Ensure your `DATABASE_URL` is set in your `.env` file.
+3. Run the schema setup script: `node --env-file=.env setup-db.js`
 
 ### 4. Paystack setup
 
@@ -95,8 +95,8 @@ After deploying, update `NEXT_PUBLIC_APP_URL` to your production URL and redeplo
 - [x] New user submits email → receives confirmation email (via Nodemailer)
 - [x] Dedicated `/joined` success page animates count-up correctly
 - [x] Confirmed user pays $1 → moved to random position (not #1, not lower)
-- [x] Confirmed user pays $3 → becomes #1 immediately
-- [x] Paying $3 while someone else is #1 leapfrogs them correctly
+- [x] Confirmed user pays $2.99 → becomes #1 immediately
+- [x] Paying $2.99 while someone else is #1 leapfrogs them correctly
 - [x] Activity feed updates and polls latest activity
 - [x] Live counter on homepage polls every 30 seconds
 - [x] Dashboard shows live position
@@ -131,7 +131,7 @@ the only safe way to handle this.
 
 ## System Message Cron (Optional)
 
-To generate satirical system messages in the activity feed every 10 minutes, you can add a Vercel Cron Job:
+To generate satirical system messages in the activity feed once a day (to comply with Vercel Hobby limits), you can add a Vercel Cron Job:
 
 ```json
 // vercel.json — add to existing config
@@ -139,7 +139,7 @@ To generate satirical system messages in the activity feed every 10 minutes, you
   "crons": [
     {
       "path": "/api/cron/system-message",
-      "schedule": "*/10 * * * *"
+      "schedule": "0 0 * * *"
     }
   ]
 }

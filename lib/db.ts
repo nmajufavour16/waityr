@@ -1,7 +1,9 @@
 import { Pool, QueryResult, QueryResultRow } from 'pg';
 
+const connectionString = process.env.DATABASE_URL?.replace('?sslmode=require', '');
+
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString,
   ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : undefined,
 });
 
