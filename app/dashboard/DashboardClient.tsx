@@ -216,7 +216,7 @@ export default function DashboardClient({ entry, initialFeedItems }: Props) {
   const prevPosition = useRef(entry.position);
   const router = useRouter();
   const { toasts, addToast, removeToast } = useToast();
-  const appUrl = typeof window !== 'undefined' ? window.location.origin : 'https://waityr.vercel.app';
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://waityr.vercel.app';
   const days = daysSince(entry.joined_at);
 
   // Sign out
@@ -260,13 +260,6 @@ export default function DashboardClient({ entry, initialFeedItems }: Props) {
             <h1 className="text-2xl font-semibold text-[#0A0A0A] tracking-tight font-display">Your spot.</h1>
             <p className="text-sm text-[#6B7280] mt-1">{entry.email}</p>
           </div>
-          <button
-            onClick={signOut}
-            className="flex items-center gap-1.5 text-sm text-[#9CA3AF] hover:text-[#6B7280] transition-colors"
-          >
-            <LogOut className="w-4 h-4" />
-            <span className="hidden sm:inline">Sign out</span>
-          </button>
         </div>
 
         {/* Grid */}

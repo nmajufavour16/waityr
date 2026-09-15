@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { db } from '@/lib/db';
 import Logo from '@/components/Logo';
 import DashboardClient from './DashboardClient';
+import { LogOut } from 'lucide-react';
 
 export default async function DashboardPage() {
   const cookieStore = await cookies();
@@ -46,9 +47,10 @@ function DashboardSignOut() {
     <form action="/api/auth/signout" method="POST">
       <button
         type="submit"
-        className="flex items-center gap-1.5 text-sm text-[#9CA3AF] hover:text-[#0A0A0A] transition-colors px-3 py-1.5 rounded-lg hover:bg-gray-50"
+        className="flex items-center gap-1.5 text-sm text-[#6B7280] font-medium hover:text-[#0f766e] transition-colors px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-[#0D9488]/10"
       >
-        Sign out
+        <LogOut className="w-4 h-4" />
+        <span className="hidden sm:inline">Sign out</span>
       </button>
     </form>
   );
