@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 
-export async function POST() {
-  const res = NextResponse.json({ ok: true });
+export async function POST(req: Request) {
+  const url = new URL('/', req.url);
+  const res = NextResponse.redirect(url, { status: 303 });
   res.cookies.set('waityr_email', '', {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
