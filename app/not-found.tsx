@@ -7,7 +7,7 @@ export default function NotFound() {
         <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#9CA3AF] mb-3">
           Error 404
         </p>
-        <h1 className="text-4xl sm:text-5xl font-extrabold text-[#0A0A0A] mb-4 font-display tracking-tight">
+        <h1 className="text-4xl sm:text-5xl font-extrabold text-[#0D9488] mb-4 font-display tracking-tight">
           Are you lost?
         </h1>
         <p className="text-[#6B7280] mb-8 text-lg leading-relaxed">
@@ -15,7 +15,7 @@ export default function NotFound() {
         </p>
         <Link
           href="/"
-          className="inline-block btn-teal bg-[#0A0A0A] text-white font-semibold px-8 py-3.5 rounded-lg w-full sm:w-auto shadow-sm"
+          className="inline-block bg-[#0D9488] hover:bg-[#0f766e] transition-colors text-white font-semibold px-8 py-3.5 rounded-lg w-full sm:w-auto shadow-sm"
         >
           Return to the Queue
         </Link>
