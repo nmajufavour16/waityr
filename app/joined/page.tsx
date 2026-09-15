@@ -29,7 +29,7 @@ export default async function JoinedPage(props: Props) {
             <Logo />
           </Link>
           <div className="flex items-center gap-6">
-            <Link href="/dashboard" className="text-sm font-semibold text-[#6B7280] hover:text-[#0A0A0A] transition-colors">
+            <Link href="/dashboard" className="flex items-center gap-1.5 text-sm text-[#6B7280] font-medium hover:text-[#0f766e] transition-colors px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-[#0D9488]/10">
               Sign in
             </Link>
           </div>
@@ -45,7 +45,7 @@ export default async function JoinedPage(props: Props) {
               target={position}
               duration={800}
               prefix="#"
-              className="block text-[96px] leading-none font-bold text-[#0D9488] tabular-nums"
+              className="block text-[72px] leading-none font-extrabold text-[#0D9488] tabular-nums tracking-tight"
             />
             <p className="text-xl font-semibold text-[#0A0A0A] mt-3">
               You're #{position}.

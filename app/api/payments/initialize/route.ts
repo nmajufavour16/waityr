@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Amount in cents (USD)
-    const amount = type === 'random_bump' ? 100 : 300;
+    const amount = type === 'random_bump' ? 100 : 299;
 
     const result = await initializeTransaction({
       email: entry.email,

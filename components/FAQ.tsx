@@ -20,7 +20,7 @@ const FAQS = [
     a: "You probably shouldn't. But Waityrs do. They always do. We're not judging.",
   },
   {
-    q: 'What if I pay $3 to be #1 and someone else also pays $3?',
+    q: 'What if I pay $2.99 to be #1 and someone else also pays $2.99?',
     a: "They become #1. You become #2. This is how it works. We told you upfront.",
   },
   {

@@ -106,7 +106,7 @@ export default function PrivacyPage() {
           <p>
             Waityr is not intended for children under 13. Not because the content is inappropriate —
             a numbered list is appropriate for all ages — but because children should not be paying
-            $1 or $3 to move up a waitlist for an unannounced product. They will wait for free eventually.
+            $1 or $2.99 to move up a waitlist for an unannounced product. They will wait for free eventually.
             Let them enjoy it while it lasts.
           </p>
 

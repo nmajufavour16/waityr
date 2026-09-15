@@ -60,7 +60,7 @@ async function SuccessContent({ reference }: { reference: string }) {
             You moved up.
           </p>
           {currentPosition && (
-            <p className="text-[72px] font-bold text-[#0D9488] leading-none tabular-nums">
+            <p className="text-[72px] leading-none font-extrabold text-[#0D9488] tabular-nums tracking-tight">
               #{currentPosition}
             </p>
           )}
@@ -84,7 +84,7 @@ async function SuccessContent({ reference }: { reference: string }) {
     return (
       <div className="space-y-6 text-center">
         <div>
-          <p className="text-[72px] font-bold text-[#0D9488] leading-none tabular-nums">
+          <p className="text-[72px] leading-none font-extrabold text-[#0D9488] tabular-nums tracking-tight">
             #1
           </p>
           <p className="text-xl font-semibold text-[#0A0A0A] mt-3">
@@ -94,7 +94,7 @@ async function SuccessContent({ reference }: { reference: string }) {
         </div>
 
         <p className="text-sm text-[#6B7280] leading-relaxed max-w-xs mx-auto">
-          Someone could pay $3 right now and take it. That's the deal. You
+          Someone could pay $2.99 right now and take it. That's the deal. You
           knew.
         </p>
 

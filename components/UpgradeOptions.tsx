@@ -73,9 +73,9 @@ export default function UpgradeOptions({ email, onSuccess }: Props) {
             </span>
           </div>
           <p className="text-sm font-semibold text-[#0A0A0A]">Top of the List</p>
-          <p className="text-3xl font-extrabold text-[#0A0A0A] mt-2 mb-3">$3</p>
+          <p className="text-3xl font-extrabold text-[#0A0A0A] mt-2 mb-3">$2.99</p>
           <p className="text-sm text-[#6B7280] leading-relaxed flex-1 mb-5">
-            Become #1. Immediately. Until someone else pays $3.
+            Become #1. Immediately. Until someone else pays $2.99.
           </p>
           <div className="w-full">
             <button

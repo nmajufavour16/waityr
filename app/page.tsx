@@ -55,7 +55,7 @@ export default async function HomePage(props: Props) {
             <a href="#how-it-works" className="text-sm text-[#6B7280] hover:text-[#0A0A0A] transition-colors px-3 py-1.5 rounded-lg hover:bg-gray-50 hidden md:block">How it works</a>
             <a href="#pricing" className="text-sm text-[#6B7280] hover:text-[#0A0A0A] transition-colors px-3 py-1.5 rounded-lg hover:bg-gray-50 hidden md:block">Pricing</a>
             <a href="#faq" className="text-sm text-[#6B7280] hover:text-[#0A0A0A] transition-colors px-3 py-1.5 rounded-lg hover:bg-gray-50 hidden md:block">FAQ</a>
-            <Link href="/signin" className="text-sm text-[#6B7280] hover:text-[#0A0A0A] transition-colors px-3 py-1.5 rounded-lg hover:bg-gray-50">Sign in</Link>
+            <Link href="/signin" className="flex items-center gap-1.5 text-sm text-[#6B7280] font-medium hover:text-[#0f766e] transition-colors px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-[#0D9488]/10">Sign in</Link>
             <a href="#join" className="text-sm font-semibold bg-[#0A0A0A] hover:bg-[#1a1a1a] text-white transition-colors px-4 py-1.5 rounded-lg ml-1 btn-teal">Get in line</a>
           </div>
         </div>
@@ -134,8 +134,8 @@ export default async function HomePage(props: Props) {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 lg:gap-10">
               {[
                 { icon: <Users className="w-5 h-5 text-[#0D9488]" />, step: '01', title: 'Join as a Waityr', body: 'Enter your email. Get a position number. Confirm your spot. You are now on the list.' },
-                { icon: <ArrowUpCircle className="w-5 h-5 text-[#0D9488]" />, step: '02', title: 'Move up', body: 'Pay $1 to jump to a random higher position. Or pay $3 to go straight to #1. Immediately.' },
-                { icon: <Trophy className="w-5 h-5 text-[#0D9488]" />, step: '03', title: 'Hold your spot', body: "Someone can pay $3 and take #1 from you at any time. That's the game. Hold on as long as you can." },
+                { icon: <ArrowUpCircle className="w-5 h-5 text-[#0D9488]" />, step: '02', title: 'Move up', body: 'Pay $1 to jump to a random higher position. Or pay $2.99 to go straight to #1. Immediately.' },
+                { icon: <Trophy className="w-5 h-5 text-[#0D9488]" />, step: '03', title: 'Hold your spot', body: "Someone can pay $2.99 and take #1 from you at any time. That's the game. Hold on as long as you can." },
               ].map((s, i) => (
                 <div key={i} className="card-hover border border-gray-200 rounded-2xl p-6 bg-white">
                   <div className="flex items-center gap-3 mb-5">
@@ -164,7 +164,7 @@ export default async function HomePage(props: Props) {
               {[
                 { icon: <TrendingUp className="w-4 h-4 text-[#0D9488]" />, title: 'A live position number', body: 'Real. Updates instantly. Changes when you pay, when others pay, when referrals happen.' },
                 { icon: <Eye className="w-4 h-4 text-[#0D9488]" />, title: 'Full activity feed', body: 'Watch every Waityr join, bump up, and fight for #1. Happening live in front of you.' },
-                { icon: <Zap className="w-4 h-4 text-[#0D9488]" />, title: 'Instant #1 access', body: '$3 and you are #1. No delays. The position updates before the page does.' },
+                { icon: <Zap className="w-4 h-4 text-[#0D9488]" />, title: 'Instant #1 access', body: '$2.99 and you are #1. No delays. The position updates before the page does.' },
                 { icon: <Share2 className="w-4 h-4 text-[#0D9488]" />, title: 'Your referral link', body: 'Every Waityr who joins through your link moves you up one spot. Free. No payment required.' },
                 { icon: <Clock className="w-4 h-4 text-[#0D9488]" />, title: 'Time on the list', body: "We track how long you've held each position. The patience leaderboard is coming." },
                 { icon: <ShieldCheck className="w-4 h-4 text-[#0D9488]" />, title: 'Radical transparency', body: "No product yet. Payments move your position only. Stated here, in the FAQ, and before every payment." },
@@ -229,15 +229,15 @@ export default async function HomePage(props: Props) {
                 </div>
               </div>
 
-              {/* $3 */}
+              {/* $2.99 */}
               <div className="card-hover border border-gray-200 rounded-2xl p-6 bg-white flex flex-col">
                 <div className="mb-5">
                   <p className="text-sm font-semibold text-[#0A0A0A]">Top of the List</p>
-                  <p className="text-4xl font-extrabold text-[#0A0A0A] mt-2 tracking-tight">$3</p>
+                  <p className="text-4xl font-extrabold text-[#0A0A0A] mt-2 tracking-tight">$2.99</p>
                   <p className="text-xs text-[#9CA3AF] mt-1">Until someone else does.</p>
                 </div>
                 <ul className="space-y-2.5 flex-1 mb-6">
-                  {['Become #1 immediately', 'Everyone else moves down', 'Yours until someone pays $3', 'We told you upfront'].map((item, i) => (
+                  {['Become #1 immediately', 'Everyone else moves down', 'Yours until someone pays $2.99', 'We told you upfront'].map((item, i) => (
                     <li key={i} className="text-sm text-[#6B7280] flex items-center gap-2">
                       <span className="w-1 h-1 rounded-full bg-gray-300 shrink-0" />{item}
                     </li>
@@ -259,7 +259,7 @@ export default async function HomePage(props: Props) {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
               {[
                 { quote: 'I joined the list. I received a number. The number was real. I have no further comments.', name: 'A. Okafor', handle: 'Waityr. Currently waiting.' },
-                { quote: "I paid $3. I was #1 for nine minutes. Someone paid $3. I read the FAQ again. It was there. It had always been there.", name: 'T. Williams', handle: 'Former #1. Twice.' },
+                { quote: "I paid $2.99. I was #1 for nine minutes. Someone paid $2.99. I read the FAQ again. It was there. It had always been there.", name: 'T. Williams', handle: 'Former #1. Twice.' },
                 { quote: 'My referral link worked. Three Waityrs joined. I moved up three spots. The system is exactly as described. I remain on the list.', name: 'M. Chen', handle: 'Referred 3. Still waiting.' },
               ].map((t, i) => (
                 <div key={i} className="card-hover border border-gray-200 rounded-2xl p-6 bg-white flex flex-col gap-5">

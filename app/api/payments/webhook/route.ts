@@ -125,12 +125,12 @@ export async function POST(req: NextRequest) {
     await db.query(
       `INSERT INTO activity_feed (event_type, entry_id, position_before, position_after, amount_cents, display_text)
        VALUES ($1, $2, $3, $4, $5, $6)`,
-      ['top_spot', entryId, currentPosition, 1, amountCents, `Someone paid $3. They are now #1. ${displaced} ${displaced === 1 ? 'person' : 'people'} moved down one spot.`]
+      ['top_spot', entryId, currentPosition, 1, amountCents, `Someone paid $2.99. They are now #1. ${displaced} ${displaced === 1 ? 'person' : 'people'} moved down one spot.`]
     );
 
     // Update entry stats
     await db.query(
-      'UPDATE waitlist_entries SET top_spot_count = top_spot_count + 1, total_spent_cents = total_spent_cents + 300 WHERE id = $1',
+      'UPDATE waitlist_entries SET top_spot_count = top_spot_count + 1, total_spent_cents = total_spent_cents + 299 WHERE id = $1',
       [entryId]
     );
 

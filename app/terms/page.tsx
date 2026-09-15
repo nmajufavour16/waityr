@@ -54,7 +54,7 @@ export default function TermsPage() {
           </p>
           <ul>
             <li><strong>Random Bump ($1.00 USD)</strong> — Moves your position to a random spot between your current position and #2, exclusive of #1.</li>
-            <li><strong>Top of the List ($3.00 USD)</strong> — Moves your position to #1 immediately, displacing the current holder.</li>
+            <li><strong>Top of the List ($2.99 USD)</strong> — Moves your position to #1 immediately, displacing the current holder.</li>
           </ul>
           <p>
             Payments are processed by Paystack. By making a payment, you also agree to Paystack&apos;s
@@ -84,9 +84,9 @@ export default function TermsPage() {
 
           <h2>Section 4 — Position Mechanics</h2>
           <p>
-            Position #1 is not permanent. Any Waityr may pay $3 to claim #1 at any time.
+            Position #1 is not permanent. Any Waityr may pay $2.99 to claim #1 at any time.
             This is not a bug. This is the entire mechanic. If you hold #1 and someone
-            pays $3, you move to #2. This was disclosed on the landing page, in the FAQ,
+            pays $2.99, you move to #2. This was disclosed on the landing page, in the FAQ,
             in your confirmation email, and in these terms. You have been informed.
           </p>
           <p>
@@ -142,7 +142,7 @@ export default function TermsPage() {
             To the maximum extent permitted by law, Waityr&apos;s total liability to you for any
             claim arising from the Service is limited to the total amount you have paid
             in connection with the specific transaction giving rise to the claim.
-            That is $1 or $3. We want to be transparent about this.
+            That is $1 or $2.99. We want to be transparent about this.
           </p>
 
           <h2>Section 10 — Termination</h2>
@@ -165,7 +165,7 @@ export default function TermsPage() {
             Any disputes shall be resolved in the courts of competent jurisdiction in Port Harcourt, Nigeria.
             We encourage you to resolve any concerns by emailing us first.
             Most things can be settled without a court date, especially when the
-            disputed value is $3 and the product is a list.
+            disputed value is $2.99 and the product is a list.
           </p>
 
           <h2>Section 12 — Changes to These Terms</h2>

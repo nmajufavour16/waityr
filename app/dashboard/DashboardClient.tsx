@@ -95,14 +95,14 @@ function DashboardUpgradeOptions({ email }: { email: string }) {
           </button>
         </div>
 
-        {/* $3 */}
+        {/* $2.99 */}
         <div className="border border-gray-200 rounded-xl p-4 flex flex-col gap-3">
           <div>
             <p className="text-xs font-semibold text-[#0A0A0A]">Top of the List</p>
-            <p className="text-2xl font-extrabold text-[#0A0A0A] tracking-tight mt-0.5">$3</p>
+            <p className="text-2xl font-extrabold text-[#0A0A0A] tracking-tight mt-0.5">$2.99</p>
           </div>
           <p className="text-xs text-[#6B7280] leading-relaxed flex-1">
-            Become #1. Until someone else pays $3. This was disclosed.
+            Become #1. Until someone else pays $2.99. This was disclosed.
           </p>
           <button
             onClick={() => pay('top_spot')}
@@ -271,7 +271,7 @@ export default function DashboardClient({ entry, initialFeedItems }: Props) {
             {/* Position card */}
             <div className="border border-gray-200 rounded-2xl p-6 anim-scale-in delay-1">
               <p className="text-[11px] font-semibold uppercase tracking-[0.1em] text-[#9CA3AF] mb-3">Your Position</p>
-              <div className="flex items-end gap-5 mb-2">
+              <div className="flex items-end gap-5 mb-12">
                 <CountUp
                   target={position}
                   duration={400}

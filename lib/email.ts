@@ -84,7 +84,7 @@ export async function sendConfirmationEmail({
     <p class="body-text">
       You joined at <strong>#${position}</strong>${ahead > 0 ? `, ahead of ${ahead.toLocaleString()} ${ahead === 1 ? 'person' : 'people'} who came after you` : ''}.<br/><br/>
       Your position is already moving. People are joining, bumping up, and competing for #1 right now.
-      Confirm your spot to lock in access to your dashboard. There, you can pay $1 to move up randomly, or $3 to go straight to #1.
+      Confirm your spot to lock in access to your dashboard. There, you can pay $1 to move up randomly, or $2.99 to go straight to #1.
     </p>
     <a class="btn" href="${confirmUrl}">Confirm my spot →</a>
     <div class="meta">
@@ -195,7 +195,7 @@ export async function sendDisplacedFromTopEmail({
     <div class="position">#${newPosition}</div>
     <h1 class="headline">You're no longer #1.</h1>
     <p class="body-text">
-      Someone paid $3. They are now #1. You are #${newPosition}.<br/><br/>
+      Someone paid $2.99. They are now #1. You are #${newPosition}.<br/><br/>
       You held the top spot for <strong>${timeDisplay}</strong>.
       This outcome was described in the FAQ before you paid.
       We are mentioning it again here for completeness.
@@ -209,7 +209,7 @@ export async function sendDisplacedFromTopEmail({
   await transporter.sendMail({
     from: FROM,
     to,
-    subject: `You're no longer #1. Someone paid $3.`,
+    subject: `You're no longer #1. Someone paid $2.99.`,
     html,
   });
 }
