@@ -1,24 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createServerClient } from '@/lib/supabase';
+import { z } from 'zod';
+import { db } from '@/lib/db';
 import { sendMagicLinkEmail } from '@/lib/email';
 import { randomUUID } from 'crypto';
 
+const signinSchema = z.object({
+  email: z.string().email('Invalid email address.'),
+});
+
 export async function POST(req: NextRequest) {
   try {
-    const { email } = await req.json() as { email: string };
+    const body = await req.json();
+    const parseResult = signinSchema.safeParse(body);
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email || !emailRegex.test(email)) {
-      return NextResponse.json({ error: 'Invalid email address.' }, { status: 400 });
+    if (!parseResult.success) {
+      return NextResponse.json({ error: parseResult.error.issues[0].message }, { status: 400 });
     }
 
-    const supabase = createServerClient();
+    const { email } = parseResult.data;
 
-    const { data: entry } = await supabase
-      .from('waitlist_entries')
-      .select('id, email, position, confirmed')
-      .eq('email', email.toLowerCase().trim())
-      .maybeSingle();
+    const { rows } = await db.query(
+      'SELECT id, email, position, confirmed FROM waitlist_entries WHERE email = $1 LIMIT 1',
+      [email.toLowerCase().trim()]
+    );
+    const entry = rows.length > 0 ? rows[0] : null;
 
     if (!entry) {
       // Don't reveal whether email exists — send generic response
@@ -28,10 +33,10 @@ export async function POST(req: NextRequest) {
     // Generate a fresh token
     const newToken = randomUUID();
 
-    await supabase
-      .from('waitlist_entries')
-      .update({ confirmation_token: newToken })
-      .eq('id', entry.id);
+    await db.query(
+      'UPDATE waitlist_entries SET confirmation_token = $1 WHERE id = $2',
+      [newToken, entry.id]
+    );
 
     await sendMagicLinkEmail({
       to: entry.email,

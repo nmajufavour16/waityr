@@ -1,62 +1,70 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createServerClient } from '@/lib/supabase';
+import { z } from 'zod';
+import { db } from '@/lib/db';
 import { maskEmail } from '@/lib/positions';
 import { sendConfirmationEmail } from '@/lib/email';
+
+const joinSchema = z.object({
+  email: z.string().email('Invalid email address.'),
+  referral_code: z.string().optional(),
+});
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { email, referral_code } = body as { email: string; referral_code?: string };
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!email || !emailRegex.test(email)) {
-      return NextResponse.json({ error: 'Invalid email address.' }, { status: 400 });
+    const parseResult = joinSchema.safeParse(body);
+    
+    if (!parseResult.success) {
+      return NextResponse.json({ error: parseResult.error.issues[0].message }, { status: 400 });
     }
+    
+    const { email, referral_code } = parseResult.data;
 
-    const supabase = createServerClient();
+    const { rows: existingRows } = await db.query(
+      'SELECT id, email, position FROM waitlist_entries WHERE email = $1 LIMIT 1',
+      [email.toLowerCase().trim()]
+    );
 
-    const { data: existing } = await supabase
-      .from('waitlist_entries')
-      .select('id, email, position')
-      .eq('email', email.toLowerCase().trim())
-      .maybeSingle();
-
-    if (existing) {
+    if (existingRows.length > 0) {
       return NextResponse.json({ already_exists: true }, { status: 200 });
     }
 
-    const { data: result, error: rpcError } = await supabase.rpc('join_waitlist', {
-      p_email: email.toLowerCase().trim(),
-      p_referral_code: referral_code ?? null,
-    });
-
-    if (rpcError || !result || result.length === 0) {
+    let resultRows;
+    try {
+      const result = await db.query(
+        'SELECT * FROM join_waitlist($1, $2)',
+        [email.toLowerCase().trim(), referral_code ?? null]
+      );
+      resultRows = result.rows;
+    } catch (rpcError) {
       console.error('join_waitlist RPC error:', rpcError);
       return NextResponse.json({ error: 'Failed to join waitlist.' }, { status: 500 });
     }
 
-    const row = result[0];
+    if (!resultRows || resultRows.length === 0) {
+      console.error('join_waitlist returned no result');
+      return NextResponse.json({ error: 'Failed to join waitlist.' }, { status: 500 });
+    }
+
+    const row = resultRows[0];
     const newId: string = row.new_id;
     const newPosition: number = row.new_position;
     const confirmationToken: string = row.new_confirmation_token;
     const referrerId: string | null = row.referrer_id;
 
-    await supabase.from('activity_feed').insert({
-      event_type: 'joined',
-      entry_id: newId,
-      position_after: newPosition,
-      display_text: `${maskEmail(email)} joined the list. They are #${newPosition}.`,
-    });
+    await db.query(
+      `INSERT INTO activity_feed (event_type, entry_id, position_after, display_text)
+       VALUES ($1, $2, $3, $4)`,
+      ['joined', newId, newPosition, `${maskEmail(email)} joined the list. They are #${newPosition}.`]
+    );
 
     if (referrerId && row.referrer_position) {
       const newReferrerPos = row.referrer_position - 1;
-      await supabase.from('activity_feed').insert({
-        event_type: 'referral_bump',
-        entry_id: referrerId,
-        position_before: row.referrer_position,
-        position_after: newReferrerPos,
-        display_text: `${maskEmail(email)} joined via referral. Their referrer moved up to #${newReferrerPos}.`,
-      });
+      await db.query(
+        `INSERT INTO activity_feed (event_type, entry_id, position_before, position_after, display_text)
+         VALUES ($1, $2, $3, $4, $5)`,
+        ['referral_bump', referrerId, row.referrer_position, newReferrerPos, `${maskEmail(email)} joined via referral. Their referrer moved up to #${newReferrerPos}.`]
+      );
     }
 
     sendConfirmationEmail({ to: email, position: newPosition, confirmationToken })

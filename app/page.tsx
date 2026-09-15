@@ -9,39 +9,38 @@ import LiveCounter from '@/components/LiveCounter';
 import StackedActivityFeed from '@/components/StackedActivityFeed';
 import FAQ from '@/components/FAQ';
 import Logo from '@/components/Logo';
-import { createServerClient } from '@/lib/supabase';
-import type { ActivityFeedItem } from '@/lib/supabase';
+import { db } from '@/lib/db';
+import type { ActivityFeedItem } from '@/app/dashboard/DashboardClient';
 
 async function getInitialFeedItems(): Promise<ActivityFeedItem[]> {
   try {
-    const supabase = createServerClient();
-    const { data } = await supabase
-      .from('activity_feed').select('*')
-      .order('created_at', { ascending: false }).limit(50);
-    return (data ?? []) as ActivityFeedItem[];
+    const { rows } = await db.query(
+      'SELECT * FROM activity_feed ORDER BY created_at DESC LIMIT 50'
+    );
+    return rows;
   } catch { return []; }
 }
 
 async function getStats() {
   try {
-    const supabase = createServerClient();
-    const { count: total } = await supabase
-      .from('waitlist_entries').select('id', { count: 'exact', head: true });
-    const { data: rev } = await supabase
-      .from('waitlist_entries').select('total_spent_cents');
-    const revenue = (rev ?? []).reduce(
-      (s: number, r: { total_spent_cents: number }) => s + (r.total_spent_cents ?? 0), 0
+    const { rows: totalRows } = await db.query('SELECT COUNT(*) as exact FROM waitlist_entries');
+    const { rows: revRows } = await db.query('SELECT SUM(total_spent_cents) as total_spent FROM waitlist_entries');
+    const { rows: topRows } = await db.query(
+      'SELECT top_spot_count FROM waitlist_entries ORDER BY top_spot_count DESC LIMIT 1'
     );
-    const { data: top } = await supabase
-      .from('waitlist_entries').select('top_spot_count')
-      .order('top_spot_count', { ascending: false }).limit(1).maybeSingle();
-    return { total_waiters: total ?? 0, total_revenue_cents: revenue, top_spot_record: top?.top_spot_count ?? 0 };
+    
+    return { 
+      total_waiters: parseInt(totalRows[0]?.exact || '0'), 
+      total_revenue_cents: parseInt(revRows[0]?.total_spent || '0'), 
+      top_spot_record: topRows[0]?.top_spot_count || 0 
+    };
   } catch { return { total_waiters: 0, total_revenue_cents: 0, top_spot_record: 0 }; }
 }
 
-interface Props { searchParams: { ref?: string; error?: string }; }
+interface Props { searchParams: Promise<{ ref?: string; error?: string }> };
 
-export default async function HomePage({ searchParams }: Props) {
+export default async function HomePage(props: Props) {
+  const searchParams = await props.searchParams;
   const [feedItems, stats] = await Promise.all([getInitialFeedItems(), getStats()]);
   const { ref: referralCode, error } = searchParams;
 
@@ -66,10 +65,10 @@ export default async function HomePage({ searchParams }: Props) {
 
         {/* ── Hero ────────────────────────────────────────────────────── */}
         <section className="hero-bg" id="join">
-          <div className="max-w-6xl mx-auto px-6 pt-20 pb-16 sm:pt-28 sm:pb-20">
+          <div className="max-w-6xl mx-auto px-6 pt-16 pb-12 sm:pt-20 sm:pb-12">
 
             {error && (
-              <div className="mb-8 border border-amber-200 bg-amber-50 rounded-xl px-4 py-3 text-sm text-amber-700 anim-fade-in">
+              <div className="mb-6 border border-amber-200 bg-amber-50 rounded-xl px-4 py-3 text-sm text-amber-700 anim-fade-in">
                 {error === 'token_expired' && 'That link has expired. Join again to get a new one.'}
                 {error === 'token_not_found' && 'That link is invalid.'}
                 {(error === 'invalid_token' || error === 'not_signed_in') && 'Sign in to access your dashboard.'}
@@ -79,26 +78,26 @@ export default async function HomePage({ searchParams }: Props) {
             <div className="max-w-2xl mx-auto text-center">
               {/* Left */}
               <div>
-                <div className="inline-flex items-center gap-2.5 border border-gray-200 bg-white rounded-full px-3.5 py-1.5 mb-10 shadow-sm anim-fade-in mx-auto">
+                <div className="inline-flex items-center gap-2.5 border border-gray-200 bg-white rounded-full px-3.5 py-1.5 mb-6 shadow-sm anim-fade-in mx-auto">
                   <span className="pulse-dot" />
                   <span className="text-xs font-medium text-[#374151]">Now live &mdash; accepting Waityrs globally</span>
                 </div>
 
                 <h1 className="text-[44px] sm:text-[60px] lg:text-[68px] font-semibold text-[#0A0A0A] leading-[1.02] tracking-tight anim-fade-up delay-1 mx-auto font-display">
                   Something is coming.<br />
-                  <span className="text-[#0D9488]"><em>Get in line!</em></span>
+                  <span className="text-[#0D9488]">Get in line!</span>
                 </h1>
 
-                <p className="mt-5 text-[17px] sm:text-[19px] text-[#6B7280] max-w-md leading-relaxed anim-fade-up delay-2 mx-auto">
+                <p className="mt-4 text-[17px] sm:text-[19px] text-[#6B7280] max-w-md leading-relaxed anim-fade-up delay-2 mx-auto">
                   We can&apos;t tell you what it is, yet.
                   But it&apos;s going to be something.
                 </p>
 
-                <div className="mt-5 anim-fade-up delay-3">
+                <div className="mt-4 anim-fade-up delay-3">
                   <LiveCounter />
                 </div>
 
-                <div className="mt-7 anim-fade-up delay-4 flex justify-center">
+                <div className="mt-6 anim-fade-up delay-4 flex justify-center">
                   <WaitlistForm referralCode={referralCode} />
                 </div>
               </div>
@@ -107,7 +106,7 @@ export default async function HomePage({ searchParams }: Props) {
             </div>
 
             {/* Stats strip — all screen sizes */}
-            <div className="mt-12 pt-8 border-t border-gray-100 grid grid-cols-2 sm:grid-cols-4 gap-6 anim-fade-up delay-5">
+            <div className="mt-10 pt-6 border-t border-gray-100 grid grid-cols-2 sm:grid-cols-4 gap-6 anim-fade-up delay-5">
               {[
                 { value: stats.total_waiters > 0 ? stats.total_waiters.toLocaleString() : '—', label: 'Waityrs in queue' },
                 { value: stats.total_revenue_cents > 0 ? `$${(stats.total_revenue_cents / 100).toFixed(0)}` : '$0', label: 'Spent chasing #1' },

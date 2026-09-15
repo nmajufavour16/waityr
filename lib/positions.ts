@@ -1,22 +1,17 @@
-import { createServerClient } from './supabase';
+import { db } from './db';
 
 /**
  * Atomically moves an entry to a target position.
  * All entries between target and current are shifted down by 1.
- * Implemented as a Supabase RPC (PostgreSQL stored procedure) for atomicity.
+ * Implemented as a PostgreSQL stored procedure (move_to_position) for atomicity.
  */
 export async function performPositionMove(
   entryId: string,
   targetPosition: number
 ): Promise<void> {
-  const supabase = createServerClient();
-
-  const { error } = await supabase.rpc('move_to_position', {
-    p_entry_id: entryId,
-    p_target: targetPosition,
-  });
-
-  if (error) {
+  try {
+    await db.query('SELECT move_to_position($1, $2)', [entryId, targetPosition]);
+  } catch (error: any) {
     throw new Error(`Position move failed: ${error.message}`);
   }
 }

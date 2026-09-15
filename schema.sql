@@ -143,23 +143,8 @@ END;
 $$;
 
 -- ---------------------------------------------------------------
--- Enable Realtime on activity_feed
+-- End of Schema
 -- ---------------------------------------------------------------
-ALTER TABLE activity_feed REPLICA IDENTITY FULL;
-
--- ---------------------------------------------------------------
--- Row Level Security (basic — tighten in production)
--- ---------------------------------------------------------------
-ALTER TABLE waitlist_entries ENABLE ROW LEVEL SECURITY;
-ALTER TABLE activity_feed    ENABLE ROW LEVEL SECURITY;
-
--- Public can read activity feed
-CREATE POLICY "activity_feed_select" ON activity_feed
-  FOR SELECT USING (true);
-
--- Public cannot read waitlist entries (only via API with service role)
-CREATE POLICY "waitlist_no_public_read" ON waitlist_entries
-  FOR SELECT USING (false);
 
 -- Public stats view (used by /api/stats)
 CREATE VIEW waitlist_stats AS

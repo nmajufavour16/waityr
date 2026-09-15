@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
-import { createServerClient } from '@/lib/supabase';
+import { db } from '@/lib/db';
 import { performPositionMove, randomBetween } from '@/lib/positions';
 import { refundTransaction } from '@/lib/paystack';
 import { sendDisplacedFromTopEmail } from '@/lib/email';
@@ -31,14 +31,10 @@ export async function POST(req: NextRequest) {
   }
 
   const reference: string = body.data.reference;
-  const supabase = createServerClient();
-
   // ── Step 3: Idempotency check ─────────────────────────────────────────────
-  const { error: insertError } = await supabase
-    .from('paystack_events')
-    .insert({ reference, event_type: body.event });
-
-  if (insertError) {
+  try {
+    await db.query('INSERT INTO paystack_events (reference, event_type) VALUES ($1, $2)', [reference, body.event]);
+  } catch (err: any) {
     // Duplicate reference — already processed
     console.log(`[webhook] Duplicate reference ${reference} — skipping`);
     return new NextResponse('OK', { status: 200 });
@@ -55,16 +51,17 @@ export async function POST(req: NextRequest) {
   }
 
   // Look up current entry
-  const { data: entry, error: entryError } = await supabase
-    .from('waitlist_entries')
-    .select('id, email, position, top_spot_count, bump_count, total_spent_cents')
-    .eq('id', entryId)
-    .single();
+  const { rows: entryRows } = await db.query(
+    'SELECT id, email, position, top_spot_count, bump_count, total_spent_cents FROM waitlist_entries WHERE id = $1 LIMIT 1',
+    [entryId]
+  );
 
-  if (entryError || !entry) {
+  if (entryRows.length === 0) {
     console.error('[webhook] Entry not found:', entryId);
     return new NextResponse('OK', { status: 200 });
   }
+
+  const entry = entryRows[0];
 
   const currentPosition: number = entry.position;
 
@@ -87,23 +84,17 @@ export async function POST(req: NextRequest) {
     }
 
     // Log to activity feed
-    await supabase.from('activity_feed').insert({
-      event_type: 'random_bump',
-      entry_id: entryId,
-      position_before: currentPosition,
-      position_after: targetPosition,
-      amount_cents: amountCents,
-      display_text: `Someone paid $1. They moved from #${currentPosition} to #${targetPosition}.`,
-    });
+    await db.query(
+      `INSERT INTO activity_feed (event_type, entry_id, position_before, position_after, amount_cents, display_text)
+       VALUES ($1, $2, $3, $4, $5, $6)`,
+      ['random_bump', entryId, currentPosition, targetPosition, amountCents, `Someone paid $1. They moved from #${currentPosition} to #${targetPosition}.`]
+    );
 
     // Update entry stats
-    await supabase
-      .from('waitlist_entries')
-      .update({
-        bump_count: entry.bump_count + 1,
-        total_spent_cents: entry.total_spent_cents + 100,
-      })
-      .eq('id', entryId);
+    await db.query(
+      'UPDATE waitlist_entries SET bump_count = bump_count + 1, total_spent_cents = total_spent_cents + 100 WHERE id = $1',
+      [entryId]
+    );
   } else if (type === 'top_spot') {
     // If already at #1, refund and skip
     if (currentPosition === 1) {
@@ -113,15 +104,13 @@ export async function POST(req: NextRequest) {
     }
 
     // Find who's currently at #1 (before the move)
-    const { data: currentTopEntry } = await supabase
-      .from('waitlist_entries')
-      .select('id, email, joined_at')
-      .eq('position', 1)
-      .maybeSingle();
+    const { rows: topEntryRows } = await db.query(
+      'SELECT id, email, joined_at FROM waitlist_entries WHERE position = 1 LIMIT 1'
+    );
+    const currentTopEntry = topEntryRows.length > 0 ? topEntryRows[0] : null;
 
-    const totalCount = await supabase
-      .from('waitlist_entries')
-      .select('id', { count: 'exact', head: true });
+    const { rows: totalCountRows } = await db.query('SELECT COUNT(id) FROM waitlist_entries');
+    const totalCount = parseInt(totalCountRows[0].count || '0', 10);
 
     const displaced = currentPosition - 1; // number of people moved down
 
@@ -133,23 +122,17 @@ export async function POST(req: NextRequest) {
     }
 
     // Log to activity feed
-    await supabase.from('activity_feed').insert({
-      event_type: 'top_spot',
-      entry_id: entryId,
-      position_before: currentPosition,
-      position_after: 1,
-      amount_cents: amountCents,
-      display_text: `Someone paid $3. They are now #1. ${displaced} ${displaced === 1 ? 'person' : 'people'} moved down one spot.`,
-    });
+    await db.query(
+      `INSERT INTO activity_feed (event_type, entry_id, position_before, position_after, amount_cents, display_text)
+       VALUES ($1, $2, $3, $4, $5, $6)`,
+      ['top_spot', entryId, currentPosition, 1, amountCents, `Someone paid $3. They are now #1. ${displaced} ${displaced === 1 ? 'person' : 'people'} moved down one spot.`]
+    );
 
     // Update entry stats
-    await supabase
-      .from('waitlist_entries')
-      .update({
-        top_spot_count: entry.top_spot_count + 1,
-        total_spent_cents: entry.total_spent_cents + 300,
-      })
-      .eq('id', entryId);
+    await db.query(
+      'UPDATE waitlist_entries SET top_spot_count = top_spot_count + 1, total_spent_cents = total_spent_cents + 300 WHERE id = $1',
+      [entryId]
+    );
 
     // Optionally notify displaced #1 holder
     if (currentTopEntry) {

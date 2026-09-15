@@ -1,7 +1,10 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { createBrowserClient, type ActivityFeedItem } from '@/lib/supabase';
+import useSWR from 'swr';
+import type { ActivityFeedItem } from '@/app/dashboard/DashboardClient';
+
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const MAX_ITEMS = 50;
 
@@ -49,60 +52,38 @@ interface Props {
 }
 
 export default function ActivityFeed({ initialItems = [] }: Props) {
-  const [items, setItems] = useState<ActivityFeedItem[]>(initialItems);
   const [newIds, setNewIds] = useState<Set<string>>(new Set());
-  const mounted = useRef(false);
+  const prevTopItemRef = useRef<string | null>(initialItems[0]?.id || null);
+
+  const { data } = useSWR('/api/feed/latest', fetcher, {
+    fallbackData: { items: initialItems },
+    refreshInterval: 3000,
+  });
+
+  const items: ActivityFeedItem[] = data?.items || initialItems;
 
   useEffect(() => {
-    if (mounted.current) return;
-    mounted.current = true;
-
-    const supabase = createBrowserClient();
-
-    // Initial fetch if no SSR data
-    if (initialItems.length === 0) {
-      supabase
-        .from('activity_feed')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(MAX_ITEMS)
-        .then(({ data }) => {
-          if (data) setItems(data as ActivityFeedItem[]);
+    if (items.length === 0) return;
+    const currentTop = items[0].id;
+    
+    if (prevTopItemRef.current && prevTopItemRef.current !== currentTop) {
+      // Find new items
+      const prevIndex = items.findIndex(item => item.id === prevTopItemRef.current);
+      const newItems = prevIndex > 0 ? items.slice(0, prevIndex) : [items[0]];
+      
+      const ids = newItems.map(item => item.id);
+      setNewIds(prev => new Set([...Array.from(prev), ...ids]));
+      
+      setTimeout(() => {
+        setNewIds(prev => {
+          const next = new Set(prev);
+          ids.forEach(id => next.delete(id));
+          return next;
         });
+      }, 1000);
     }
-
-    // Subscribe to realtime inserts
-    const channel = supabase
-      .channel('activity_feed_changes')
-      .on(
-        'postgres_changes',
-        { event: 'INSERT', schema: 'public', table: 'activity_feed' },
-        (payload) => {
-          const newItem = payload.new as ActivityFeedItem;
-          setItems((prev) => {
-            const updated = [newItem, ...prev].slice(0, MAX_ITEMS);
-            return updated;
-          });
-          setNewIds((prev) => {
-            const next = new Set(prev);
-            next.add(newItem.id);
-            setTimeout(() => {
-              setNewIds((s) => {
-                const n = new Set(s);
-                n.delete(newItem.id);
-                return n;
-              });
-            }, 1000);
-            return next;
-          });
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [initialItems]);
+    prevTopItemRef.current = currentTop;
+  }, [items]);
 
   if (items.length === 0) {
     return (

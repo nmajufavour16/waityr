@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createServerClient } from '@/lib/supabase';
+import { db } from '@/lib/db';
 
 // GET /api/waitlist/position?email=...
 // Returns the current position for a confirmed user.
@@ -11,17 +11,13 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Email required.' }, { status: 400 });
   }
 
-  const supabase = createServerClient();
+  const { rows } = await db.query(
+    'SELECT id, position, joined_at, confirmed, total_spent_cents, bump_count, top_spot_count, referral_code FROM waitlist_entries WHERE email = $1 LIMIT 1',
+    [email.toLowerCase().trim()]
+  );
+  const data = rows.length > 0 ? rows[0] : null;
 
-  const { data, error } = await supabase
-    .from('waitlist_entries')
-    .select(
-      'id, position, joined_at, confirmed, total_spent_cents, bump_count, top_spot_count, referral_code'
-    )
-    .eq('email', email.toLowerCase().trim())
-    .maybeSingle();
-
-  if (error || !data) {
+  if (!data) {
     return NextResponse.json({ error: 'Entry not found.' }, { status: 404 });
   }
 

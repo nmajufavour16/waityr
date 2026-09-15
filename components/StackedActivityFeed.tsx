@@ -1,7 +1,10 @@
 'use client';
 
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { createBrowserClient, type ActivityFeedItem } from '@/lib/supabase';
+import useSWR from 'swr';
+import type { ActivityFeedItem } from '@/app/dashboard/DashboardClient';
+
+const fetcher = (url: string) => fetch(url).then(res => res.json());
 
 const MAX_ITEMS = 50;
 const STACK_VISIBLE = 4;
@@ -109,29 +112,16 @@ export default function StackedActivityFeed({ initialItems = [] }: Props) {
     timerRef.current = setInterval(cycle, AUTO_CYCLE_MS);
   }, [cycle]);
 
+  const { data } = useSWR('/api/feed/latest', fetcher, {
+    fallbackData: { items: initialItems },
+    refreshInterval: 3000,
+  });
+
   useEffect(() => {
-    if (mounted.current) return;
-    mounted.current = true;
-    const supabase = createBrowserClient();
-
-    if (initialItems.length === 0) {
-      supabase
-        .from('activity_feed')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(MAX_ITEMS)
-        .then(({ data }) => { if (data) setItems(data as ActivityFeedItem[]); });
+    if (data?.items) {
+      setItems(data.items);
     }
-
-    const channel = supabase
-      .channel('feed_stack')
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'activity_feed' }, (payload) => {
-        setItems((prev) => [payload.new as ActivityFeedItem, ...prev].slice(0, MAX_ITEMS));
-      })
-      .subscribe();
-
-    return () => { supabase.removeChannel(channel); };
-  }, [initialItems]);
+  }, [data]);
 
   if (items.length === 0) {
     return (

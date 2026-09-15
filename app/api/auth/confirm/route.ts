@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createServerClient } from '@/lib/supabase';
+import { db } from '@/lib/db';
 
 export async function GET(req: NextRequest) {
   const token = req.nextUrl.searchParams.get('token');
@@ -9,18 +9,16 @@ export async function GET(req: NextRequest) {
     return NextResponse.redirect(`${appUrl}/?error=invalid_token`);
   }
 
-  const supabase = createServerClient();
-
   // Find entry by confirmation token
-  const { data: entry, error } = await supabase
-    .from('waitlist_entries')
-    .select('id, email, confirmed, joined_at')
-    .eq('confirmation_token', token)
-    .maybeSingle();
+  const { rows } = await db.query(
+    'SELECT id, email, confirmed, joined_at FROM waitlist_entries WHERE confirmation_token = $1 LIMIT 1',
+    [token]
+  );
 
-  if (error || !entry) {
+  if (rows.length === 0) {
     return NextResponse.redirect(`${appUrl}/?error=token_not_found`);
   }
+  const entry = rows[0];
 
   // Check token age (24-hour expiry)
   const joinedAt = new Date(entry.joined_at);
@@ -44,10 +42,10 @@ export async function GET(req: NextRequest) {
   }
 
   // Confirm the entry
-  await supabase
-    .from('waitlist_entries')
-    .update({ confirmed: true })
-    .eq('id', entry.id);
+  await db.query(
+    'UPDATE waitlist_entries SET confirmed = true WHERE id = $1',
+    [entry.id]
+  );
 
   // Set session cookie and redirect to dashboard
   const res = NextResponse.redirect(`${appUrl}/dashboard`);

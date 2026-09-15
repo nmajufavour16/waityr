@@ -2,10 +2,23 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { createBrowserClient, type ActivityFeedItem } from '@/lib/supabase';
+import useSWR from 'swr';
+// Types should ideally be shared, but since we removed supabase we'll define ActivityFeedItem locally if needed, or import from a shared file.
+// Wait, we need to define ActivityFeedItem since we removed it from supabase.ts.
+export interface ActivityFeedItem {
+  id: string;
+  event_type: 'joined' | 'random_bump' | 'top_spot' | 'referral_bump' | 'system';
+  entry_id?: string;
+  position_before?: number;
+  position_after?: number;
+  amount_cents?: number;
+  display_text: string;
+  created_at: string;
+}
 import CountUp from '@/components/CountUp';
 import StackedActivityFeed from '@/components/StackedActivityFeed';
 import { ToastContainer, useToast } from '@/components/Toast';
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 import {
   LogOut, Copy, Check, Pencil, X, ArrowUpCircle, Trophy,
   TrendingUp, Calendar, Zap,
@@ -212,35 +225,29 @@ export default function DashboardClient({ entry, initialFeedItems }: Props) {
     router.push('/');
   };
 
+  const { data } = useSWR('/api/waitlist/status', fetcher, {
+    fallbackData: { position: entry.position },
+    refreshInterval: 3000,
+  });
+
+  const currentPos = data?.position ?? position;
+
   // Live position updates + leapfrog notifications
   useEffect(() => {
-    const supabase = createBrowserClient();
-
-    const channel = supabase
-      .channel(`entry_${entry.id}`)
-      .on('postgres_changes', {
-        event: 'UPDATE', schema: 'public', table: 'waitlist_entries',
-        filter: `id=eq.${entry.id}`,
-      }, (payload) => {
-        const newPos = (payload.new as Entry).position;
-        const oldPos = prevPosition.current;
-        if (newPos !== oldPos) {
-          prevPosition.current = newPos;
-          setPosition(newPos);
-          if (newPos > oldPos) {
-            // Someone leapfrogged this user
-            addToast({
-              type: 'leapfrog',
-              message: 'Someone just jumped ahead of you.',
-              subtext: `You moved from #${oldPos} to #${newPos}. Open your dashboard to move back up.`,
-            });
-          }
-        }
-      })
-      .subscribe();
-
-    return () => { supabase.removeChannel(channel); };
-  }, [entry.id, addToast]);
+    const oldPos = prevPosition.current;
+    if (currentPos !== oldPos) {
+      prevPosition.current = currentPos;
+      setPosition(currentPos);
+      if (currentPos > oldPos) {
+        // Someone leapfrogged this user
+        addToast({
+          type: 'leapfrog',
+          message: 'Someone just jumped ahead of you.',
+          subtext: `You moved from #${oldPos} to #${currentPos}. Open your dashboard to move back up.`,
+        });
+      }
+    }
+  }, [currentPos, addToast]);
 
   return (
     <>

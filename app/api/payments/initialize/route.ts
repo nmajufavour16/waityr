@@ -1,31 +1,30 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createServerClient } from '@/lib/supabase';
+import { z } from 'zod';
+import { db } from '@/lib/db';
 import { initializeTransaction } from '@/lib/paystack';
+
+const paymentSchema = z.object({
+  type: z.union([z.literal('random_bump'), z.literal('top_spot')]),
+  email: z.string().email('Invalid email address.'),
+});
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { type, email } = body as {
-      type: 'random_bump' | 'top_spot';
-      email: string;
-    };
+    const parseResult = paymentSchema.safeParse(body);
 
-    if (!type || !email) {
-      return NextResponse.json({ error: 'Missing required fields.' }, { status: 400 });
+    if (!parseResult.success) {
+      return NextResponse.json({ error: parseResult.error.issues[0].message }, { status: 400 });
     }
 
-    if (type !== 'random_bump' && type !== 'top_spot') {
-      return NextResponse.json({ error: 'Invalid type.' }, { status: 400 });
-    }
-
-    const supabase = createServerClient();
+    const { type, email } = parseResult.data;
 
     // Look up confirmed entry
-    const { data: entry } = await supabase
-      .from('waitlist_entries')
-      .select('id, email, confirmed, position')
-      .eq('email', email.toLowerCase().trim())
-      .maybeSingle();
+    const { rows } = await db.query(
+      'SELECT id, email, confirmed, position FROM waitlist_entries WHERE email = $1 LIMIT 1',
+      [email.toLowerCase().trim()]
+    );
+    const entry = rows.length > 0 ? rows[0] : null;
 
     if (!entry || !entry.confirmed) {
       return NextResponse.json(

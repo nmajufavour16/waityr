@@ -1,30 +1,27 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
-import { createServerClient } from '@/lib/supabase';
+import { db } from '@/lib/db';
 import Logo from '@/components/Logo';
 import DashboardClient from './DashboardClient';
 
 export default async function DashboardPage() {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const email = cookieStore.get('waityr_email')?.value;
 
   if (!email) redirect('/?error=not_signed_in');
 
-  const supabase = createServerClient();
-  const { data: entry } = await supabase
-    .from('waitlist_entries')
-    .select('id, email, position, joined_at, confirmed, total_spent_cents, bump_count, top_spot_count, referral_code')
-    .eq('email', email)
-    .maybeSingle();
+  const { rows: entryRows } = await db.query(
+    'SELECT id, email, position, joined_at, confirmed, total_spent_cents, bump_count, top_spot_count, referral_code FROM waitlist_entries WHERE email = $1 LIMIT 1',
+    [email]
+  );
+  const entry = entryRows.length > 0 ? entryRows[0] : null;
 
   if (!entry || !entry.confirmed) redirect('/confirm');
 
-  const { data: feedItems } = await supabase
-    .from('activity_feed')
-    .select('*')
-    .order('created_at', { ascending: false })
-    .limit(50);
+  const { rows: feedItems } = await db.query(
+    'SELECT * FROM activity_feed ORDER BY created_at DESC LIMIT 50'
+  );
 
   return (
     <div className="min-h-screen bg-white">

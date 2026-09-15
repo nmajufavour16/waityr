@@ -43,28 +43,21 @@ export default function UpgradeOptions({ email, onSuccess }: Props) {
   return (
     <div className="w-full space-y-4">
       {/* Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
         {/* Random Bump */}
-        <div className="border border-gray-200 rounded-lg p-5 flex flex-col gap-4">
-          <div>
-            <p className="font-600 text-[#0A0A0A] text-base font-semibold">
-              Random Bump
-            </p>
-            <p className="text-2xl font-700 font-bold text-[#0A0A0A] mt-1">$1</p>
-          </div>
-          <p className="text-sm text-[#6B7280] leading-relaxed flex-1">
-            Move up to a random spot between here and #2. Not #1. We said
-            "random," not "magic."
+        <div className="border border-gray-200 rounded-xl p-5 flex flex-col items-center text-center">
+          <p className="text-sm font-semibold text-[#0A0A0A]">Random Bump</p>
+          <p className="text-3xl font-extrabold text-[#0A0A0A] mt-2 mb-3">$1</p>
+          <p className="text-sm text-[#6B7280] leading-relaxed flex-1 mb-5">
+            Move up to a random spot between here and #2. Not #1. We said "random," not "magic."
           </p>
-          <div>
+          <div className="w-full">
             <button
               onClick={() => handlePayment('random_bump')}
               disabled={loadingType !== null}
-              className="w-full bg-[#0D9488] hover:bg-[#0f766e] text-white font-semibold text-sm py-2.5 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-white hover:bg-gray-50 text-[#0A0A0A] border border-gray-200 font-semibold text-sm py-2 px-4 rounded-lg transition-colors disabled:opacity-50"
             >
-              {loadingType === 'random_bump'
-                ? 'Redirecting...'
-                : 'Move Me Up — $1'}
+              {loadingType === 'random_bump' ? '...' : 'Move Me Up'}
             </button>
             <p className="text-[11px] text-[#9CA3AF] mt-2 text-center">
               Your new position is a surprise. Results may vary.
@@ -73,30 +66,24 @@ export default function UpgradeOptions({ email, onSuccess }: Props) {
         </div>
 
         {/* Top of the List */}
-        <div className="border border-gray-200 rounded-lg p-5 flex flex-col gap-4">
-          <div>
-            <div className="flex items-center gap-2">
-              <p className="font-600 text-[#0A0A0A] text-base font-semibold">
-                Top of the List
-              </p>
-              <span className="text-[10px] font-semibold uppercase tracking-wide bg-[#0D9488] text-white px-1.5 py-0.5 rounded">
-                Most Purchased
-              </span>
-            </div>
-            <p className="text-2xl font-700 font-bold text-[#0A0A0A] mt-1">$3</p>
+        <div className="border-2 border-[#0D9488] rounded-xl p-5 flex flex-col items-center text-center relative shadow-sm">
+          <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+            <span className="bg-[#0D9488] text-white text-[9px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full whitespace-nowrap">
+              Recommended
+            </span>
           </div>
-          <p className="text-sm text-[#6B7280] leading-relaxed flex-1">
+          <p className="text-sm font-semibold text-[#0A0A0A]">Top of the List</p>
+          <p className="text-3xl font-extrabold text-[#0A0A0A] mt-2 mb-3">$3</p>
+          <p className="text-sm text-[#6B7280] leading-relaxed flex-1 mb-5">
             Become #1. Immediately. Until someone else pays $3.
           </p>
-          <div>
+          <div className="w-full">
             <button
               onClick={() => handlePayment('top_spot')}
               disabled={loadingType !== null}
-              className="w-full bg-[#0D9488] hover:bg-[#0f766e] text-white font-semibold text-sm py-2.5 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-[#0D9488] hover:bg-[#0f766e] text-white font-semibold text-sm py-2 px-4 rounded-lg transition-colors disabled:opacity-50"
             >
-              {loadingType === 'top_spot'
-                ? 'Redirecting...'
-                : 'I Want #1 — $3'}
+              {loadingType === 'top_spot' ? '...' : 'I Want #1'}
             </button>
             <p className="text-[11px] text-[#9CA3AF] mt-2 text-center">
               Position not guaranteed to stay. We mentioned this.

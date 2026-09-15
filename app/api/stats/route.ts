@@ -1,35 +1,22 @@
 import { NextResponse } from 'next/server';
-import { createServerClient } from '@/lib/supabase';
+import { db } from '@/lib/db';
 import { maskEmail } from '@/lib/positions';
 
 export const revalidate = 30; // Next.js route cache: 30 seconds
 
 export async function GET() {
   try {
-    const supabase = createServerClient();
-
     // Total waiters
-    const { count: totalWaiters } = await supabase
-      .from('waitlist_entries')
-      .select('id', { count: 'exact', head: true });
+    const { rows: countRows } = await db.query('SELECT COUNT(id) FROM waitlist_entries');
+    const totalWaiters = parseInt(countRows[0].count || '0', 10);
 
     // Total revenue
-    const { data: revenueData } = await supabase
-      .from('waitlist_entries')
-      .select('total_spent_cents');
+    const { rows: revenueRows } = await db.query('SELECT SUM(total_spent_cents) FROM waitlist_entries');
+    const totalRevenueCents = parseInt(revenueRows[0].sum || '0', 10);
 
-    const totalRevenueCents = (revenueData ?? []).reduce(
-      (sum, row) => sum + (row.total_spent_cents ?? 0),
-      0
-    );
-
-    // Top spot record (most times reclaimed #1)
-    const { data: topSpotData } = await supabase
-      .from('waitlist_entries')
-      .select('email, top_spot_count')
-      .order('top_spot_count', { ascending: false })
-      .limit(1)
-      .maybeSingle();
+    // Top spot record
+    const { rows: topSpotRows } = await db.query('SELECT email, top_spot_count FROM waitlist_entries ORDER BY top_spot_count DESC LIMIT 1');
+    const topSpotData = topSpotRows.length > 0 ? topSpotRows[0] : null;
 
     const topSpotRecordPurchases = topSpotData?.top_spot_count ?? 0;
     const topSpotRecordMasked = topSpotData?.email
@@ -37,11 +24,8 @@ export async function GET() {
       : null;
 
     // How long has #1 been waiting
-    const { data: numberOne } = await supabase
-      .from('waitlist_entries')
-      .select('joined_at')
-      .eq('position', 1)
-      .maybeSingle();
+    const { rows: numberOneRows } = await db.query('SELECT joined_at FROM waitlist_entries WHERE position = 1 LIMIT 1');
+    const numberOne = numberOneRows.length > 0 ? numberOneRows[0] : null;
 
     let numberOneTenureHours = 0;
     if (numberOne?.joined_at) {

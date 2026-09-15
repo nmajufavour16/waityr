@@ -14,7 +14,7 @@ const sizes = {
 export default function Logo({ className = '', size = 'md' }: LogoProps) {
   return (
     <>
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,600;1,600&display=swap');
         .waityr-logo {
           font-family: 'Poppins', sans-serif;
@@ -25,7 +25,7 @@ export default function Logo({ className = '', size = 'md' }: LogoProps) {
         .waityr-logo .italic-y {
           font-style: italic;
         }
-      `}</style>
+      `}} />
       <span className={`waityr-logo ${sizes[size]} ${className}`}>
         Wait<span className="italic-y">y</span>r
       </span>

@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import Link from 'next/link';
 import { verifyTransaction } from '@/lib/paystack';
-import { createServerClient } from '@/lib/supabase';
+import { db } from '@/lib/db';
 
 interface Props {
   searchParams: { reference?: string };
@@ -48,14 +48,8 @@ async function SuccessContent({ reference }: { reference: string }) {
   const entryId = transactionData.metadata?.entry_id;
 
   if (entryId) {
-    const supabase = createServerClient();
-    const { data: entry } = await supabase
-      .from('waitlist_entries')
-      .select('position')
-      .eq('id', entryId)
-      .maybeSingle();
-
-    currentPosition = entry?.position ?? null;
+    const { rows } = await db.query('SELECT position FROM waitlist_entries WHERE id = $1 LIMIT 1', [entryId]);
+    currentPosition = rows.length > 0 ? rows[0].position : null;
   }
 
   if (type === 'random_bump') {
