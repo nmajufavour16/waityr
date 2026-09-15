@@ -33,13 +33,13 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Amount in cents (USD)
-    const amount = type === 'random_bump' ? 100 : 299;
+    // Amount in kobo (NGN) based on 1350 rate
+    const amount = type === 'random_bump' ? 135000 : 405000;
 
     const result = await initializeTransaction({
       email: entry.email,
       amount,
-      currency: 'USD',
+      currency: 'NGN',
       metadata: {
         type,
         entry_id: entry.id,

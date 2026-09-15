@@ -101,7 +101,7 @@ export default function UpgradeOptions({ email, onSuccess }: Props) {
       <p className="text-[11px] text-[#9CA3AF] text-center leading-relaxed">
         Payments move your position on the Waityr waitlist. They do not
         purchase access to a product. The product is the waitlist. This is
-        disclosed because we believe in honesty.
+        disclosed because we believe in honesty. Billed in local equivalent (₦).
       </p>
     </div>
   );

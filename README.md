@@ -1,6 +1,6 @@
 # Waityr
 
-> A waitlist for a product that doesn't exist. The waitlist IS the product.
+> A waitlist for a product that doesn't exist, yet. The waitlist IS the product.
 
 ## Stack
 
@@ -18,7 +18,7 @@
 ### 1. Clone & install
 
 ```bash
-git clone https://github.com/yourname/waityr
+git clone https://github.com/nmajufavour16/waityr
 cd waityr
 npm install
 ```

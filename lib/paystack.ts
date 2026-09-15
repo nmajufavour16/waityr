@@ -10,7 +10,7 @@ function paystackHeaders() {
 export interface InitializeTransactionParams {
   email: string;
   amount: number; // in cents (USD)
-  currency: 'USD';
+  currency: 'USD' | 'NGN';
   metadata: {
     type: 'random_bump' | 'top_spot';
     entry_id: string;
