@@ -65,7 +65,7 @@ export default async function HomePage(props: Props) {
 
         {/* ── Hero ────────────────────────────────────────────────────── */}
         <section className="hero-bg" id="join">
-          <div className="max-w-6xl mx-auto px-6 pt-16 pb-12 sm:pt-20 sm:pb-12">
+          <div className="max-w-6xl mx-auto px-6 pt-12 pb-12 sm:pt-12 sm:pb-12">
 
             {error && (
               <div className="mb-6 border border-amber-200 bg-amber-50 rounded-xl px-4 py-3 text-sm text-amber-700 anim-fade-in">
@@ -83,7 +83,7 @@ export default async function HomePage(props: Props) {
                   <span className="text-xs font-medium text-[#374151]">Now live &mdash; accepting Waityrs globally</span>
                 </div>
 
-                <h1 className="text-[44px] sm:text-[60px] lg:text-[68px] font-semibold text-[#0A0A0A] leading-[1.02] tracking-tight anim-fade-up delay-1 mx-auto font-display">
+                <h1 className="text-[44px] sm:text-[60px] lg:text-[68px] font-semibold text-[#0A0A0A] leading-[1.02] tracking-tighter anim-fade-up delay-1 mx-auto font-display">
                   Something is coming.<br />
                   <span className="text-[#0D9488]">Get in line!</span>
                 </h1>
@@ -93,7 +93,7 @@ export default async function HomePage(props: Props) {
                   But it&apos;s going to be something.
                 </p>
 
-                <div className="mt-4 anim-fade-up delay-3">
+                <div className="mt-10 sm:mt-14 anim-fade-up delay-3">
                   <LiveCounter />
                 </div>
 
@@ -163,7 +163,7 @@ export default async function HomePage(props: Props) {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {[
                 { icon: <TrendingUp className="w-4 h-4 text-[#0D9488]" />, title: 'A live position number', body: 'Real. Updates instantly. Changes when you pay, when others pay, when referrals happen.' },
-                { icon: <Eye className="w-4 h-4 text-[#0D9488]" />, title: 'Full activity feed', body: 'Watch every Waityr join, bump up, and fight for #1 — happening live in front of you.' },
+                { icon: <Eye className="w-4 h-4 text-[#0D9488]" />, title: 'Full activity feed', body: 'Watch every Waityr join, bump up, and fight for #1. Happening live in front of you.' },
                 { icon: <Zap className="w-4 h-4 text-[#0D9488]" />, title: 'Instant #1 access', body: '$3 and you are #1. No delays. The position updates before the page does.' },
                 { icon: <Share2 className="w-4 h-4 text-[#0D9488]" />, title: 'Your referral link', body: 'Every Waityr who joins through your link moves you up one spot. Free. No payment required.' },
                 { icon: <Clock className="w-4 h-4 text-[#0D9488]" />, title: 'Time on the list', body: "We track how long you've held each position. The patience leaderboard is coming." },
@@ -218,14 +218,14 @@ export default async function HomePage(props: Props) {
                   <p className="text-xs text-[#9CA3AF] mt-1">Move up. Somewhere.</p>
                 </div>
                 <ul className="space-y-2.5 flex-1 mb-6">
-                  {['Jump to a random spot', 'Between here and #2', 'Not #1 — we said "random"', 'Results genuinely vary'].map((item, i) => (
+                  {['Jump to a random spot', 'Between here and #2', 'Not #1. We said "random."', 'Results genuinely vary'].map((item, i) => (
                     <li key={i} className="text-sm text-[#6B7280] flex items-center gap-2">
                       <span className="w-1 h-1 rounded-full bg-[#0D9488] shrink-0" />{item}
                     </li>
                   ))}
                 </ul>
                 <div className="btn-teal bg-[#0D9488] rounded-xl py-2.5 text-center text-sm font-semibold text-white cursor-pointer">
-                  Move Me Up — $1
+                  Move Me Up
                 </div>
               </div>
 
@@ -243,7 +243,7 @@ export default async function HomePage(props: Props) {
                     </li>
                   ))}
                 </ul>
-                <div className="border border-gray-200 rounded-xl py-2.5 text-center text-sm font-medium text-[#0A0A0A]">I Want #1 — $3</div>
+                <div className="border border-gray-200 rounded-xl py-2.5 text-center text-sm font-medium text-[#0A0A0A]">Take #1</div>
               </div>
             </div>
             <p className="mt-6 text-[11px] text-[#9CA3AF] max-w-md leading-relaxed mx-auto text-center">
@@ -288,8 +288,8 @@ export default async function HomePage(props: Props) {
                   <span className="text-[#0D9488]">Right now.</span>
                 </h2>
                 <p className="text-sm text-[#6B7280] leading-relaxed max-w-sm mx-auto lg:mx-0">
-                  Every join, every bump, every Waityr who just paid to become #1 —
-                  all of it, live. Tap the top card to cycle through.
+                  Every join, every bump, every Waityr who just paid to become #1.
+                  All of it, live. Tap the top card to cycle through.
                 </p>
               </div>
               <div>

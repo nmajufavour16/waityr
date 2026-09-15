@@ -12,13 +12,13 @@ export default function TermsPage() {
       <nav className="sticky top-0 z-40 bg-white/90 backdrop-blur-sm border-b border-gray-100">
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
           <Link href="/"><Logo size="md" /></Link>
-          <Link href="/" className="text-sm text-[#6B7280] hover:text-[#0A0A0A] transition-colors">← Back to the list</Link>
+          <Link href="/" className="inline-flex items-center gap-1.5 text-sm text-[#6B7280] font-medium hover:text-[#0f766e] transition-colors px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-[#0D9488]/10 w-fit">← Back to the list</Link>
         </div>
       </nav>
 
       <main className="max-w-2xl mx-auto px-6 py-16 sm:py-24">
         <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#9CA3AF] mb-4">Legal</p>
-        <h1 className="text-3xl sm:text-4xl font-semibold text-[#0A0A0A] tracking-tight mb-3 font-display">Terms of Service</h1>
+        <h1 className="text-3xl sm:text-4xl font-semibold text-[#0D9488] tracking-tight mb-3 font-display">Terms of Service</h1>
         <p className="text-sm text-[#9CA3AF] mb-12">
           Effective: March 2026. These terms govern your use of the Waityr waitlist.
           We have tried to write them honestly. This was easy. The product is a list.
@@ -162,7 +162,7 @@ export default function TermsPage() {
           <h2>Section 11 — Governing Law</h2>
           <p>
             These terms are governed by the laws of the Federal Republic of Nigeria.
-            Any disputes shall be resolved in the courts of competent jurisdiction in Lagos, Nigeria.
+            Any disputes shall be resolved in the courts of competent jurisdiction in Port Harcourt, Nigeria.
             We encourage you to resolve any concerns by emailing us first.
             Most things can be settled without a court date, especially when the
             disputed value is $3 and the product is a list.
@@ -178,7 +178,7 @@ export default function TermsPage() {
 
           <div className="callout mt-8">
             <p>Questions about these terms? We are available. Occasionally.<br />
-            <strong>hello@waityr.com</strong></p>
+            <strong><a href="mailto:phayvomedia@gmail.com?subject=RE:%20Waityr%20Terms%20of%20Service%20Inquiry" className="hover:text-[#0D9488] transition-colors">phayvomedia@gmail.com</a></strong></p>
           </div>
 
         </div>

@@ -82,14 +82,13 @@ export async function sendConfirmationEmail({
     <div class="position">#${position}</div>
     <h1 class="headline">You're in the queue.<br/>Confirm before someone passes you.</h1>
     <p class="body-text">
-      You joined at <strong>#${position}</strong>${ahead > 0 ? ` — ahead of ${ahead.toLocaleString()} ${ahead === 1 ? 'person' : 'people'} who came after you` : ''}.<br/><br/>
+      You joined at <strong>#${position}</strong>${ahead > 0 ? `, ahead of ${ahead.toLocaleString()} ${ahead === 1 ? 'person' : 'people'} who came after you` : ''}.<br/><br/>
       Your position is already moving. People are joining, bumping up, and competing for #1 right now.
-      Confirm your spot to lock in access to your dashboard — where you can pay $1 to move up randomly,
-      or $3 to go straight to #1.
+      Confirm your spot to lock in access to your dashboard. There, you can pay $1 to move up randomly, or $3 to go straight to #1.
     </p>
     <a class="btn" href="${confirmUrl}">Confirm my spot →</a>
     <div class="meta">
-      <p>This link expires in 24 hours. If you didn't sign up for Waityr, you can safely ignore this — your email won't be used for anything else.</p>
+      <p>This link expires in 24 hours. If you didn't sign up for Waityr, you can safely ignore this. Your email won't be used for anything else.</p>
     </div>
   `);
 
@@ -124,7 +123,7 @@ export async function sendMagicLinkEmail({
     </p>
     <a class="btn" href="${signInUrl}">Sign in to Waityr →</a>
     <div class="meta">
-      <p>This link expires in 24 hours. If you didn't request this, ignore it — nothing has changed on your account.</p>
+      <p>This link expires in 24 hours. If you didn't request this, ignore it. Nothing has changed on your account.</p>
     </div>
   `);
 
@@ -201,7 +200,7 @@ export async function sendDisplacedFromTopEmail({
       This outcome was described in the FAQ before you paid.
       We are mentioning it again here for completeness.
     </p>
-    <a class="btn" href="${reclaimUrl}">Reclaim #1 — $3 →</a>
+    <a class="btn" href="${reclaimUrl}">Reclaim #1 →</a>
     <div class="meta">
       <p>You're receiving this because you opted into #1 displacement notifications. <a href="${APP_URL}/dashboard">Manage preferences</a></p>
     </div>

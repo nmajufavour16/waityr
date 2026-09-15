@@ -12,13 +12,13 @@ export default function PrivacyPage() {
       <nav className="sticky top-0 z-40 bg-white/90 backdrop-blur-sm border-b border-gray-100">
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
           <Link href="/"><Logo size="md" /></Link>
-          <Link href="/" className="text-sm text-[#6B7280] hover:text-[#0A0A0A] transition-colors">← Back to the list</Link>
+          <Link href="/" className="inline-flex items-center gap-1.5 text-sm text-[#6B7280] font-medium hover:text-[#0f766e] transition-colors px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-[#0D9488]/10 w-fit">← Back to the list</Link>
         </div>
       </nav>
 
       <main className="max-w-2xl mx-auto px-6 py-16 sm:py-24">
         <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-[#9CA3AF] mb-4">Legal</p>
-        <h1 className="text-3xl sm:text-4xl font-semibold text-[#0A0A0A] tracking-tight mb-3 font-display">Privacy Policy</h1>
+        <h1 className="text-3xl sm:text-4xl font-semibold text-[#0D9488] tracking-tight mb-3 font-display">Privacy Policy</h1>
         <p className="text-sm text-[#9CA3AF] mb-12">Last updated: March 2026. This is the most straightforward privacy policy you will ever read.</p>
 
         <div className="legal-body space-y-2">
@@ -50,8 +50,8 @@ export default function PrivacyPage() {
             <li>How many times you have held #1 (if applicable)</li>
           </ul>
           <p>
-            We store this in Supabase, a reputable database infrastructure provider.
-            You can read their privacy policy at supabase.com/privacy.
+            We store this securely in a managed PostgreSQL database.
+            Your data stays there. We don't touch it.
           </p>
 
           <h2>What we do not store</h2>
@@ -118,7 +118,7 @@ export default function PrivacyPage() {
 
           <div className="callout mt-8">
             <p>Questions about your privacy? We will read your email. Eventually.<br />
-            <strong>hello@waityr.com</strong></p>
+            <strong><a href="mailto:phayvomedia@gmail.com?subject=Waityr%20Privacy%20Policy%20Inquiry" className="hover:text-[#0D9488] transition-colors">phayvomedia@gmail.com</a></strong></p>
           </div>
 
         </div>

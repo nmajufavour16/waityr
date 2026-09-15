@@ -91,7 +91,7 @@ function DashboardUpgradeOptions({ email }: { email: string }) {
             disabled={loading !== null}
             className="btn-teal w-full bg-[#0D9488] hover:bg-[#0f766e] text-white font-semibold text-xs py-2 px-3 rounded-lg transition-colors disabled:opacity-50"
           >
-            {loading === 'random_bump' ? 'Redirecting...' : 'Move Me Up — $1'}
+            {loading === 'random_bump' ? 'Redirecting...' : 'Move Me Up'}
           </button>
         </div>
 
@@ -109,7 +109,7 @@ function DashboardUpgradeOptions({ email }: { email: string }) {
             disabled={loading !== null}
             className="btn-teal w-full border border-gray-200 hover:border-gray-300 text-[#0A0A0A] font-semibold text-xs py-2 px-3 rounded-lg transition-colors disabled:opacity-50"
           >
-            {loading === 'top_spot' ? 'Redirecting...' : 'I Want #1 — $3'}
+            {loading === 'top_spot' ? 'Redirecting...' : 'Take #1'}
           </button>
         </div>
       </div>

@@ -83,7 +83,7 @@ export default function UpgradeOptions({ email, onSuccess }: Props) {
               disabled={loadingType !== null}
               className="w-full bg-[#0D9488] hover:bg-[#0f766e] text-white font-semibold text-sm py-2 px-4 rounded-lg transition-colors disabled:opacity-50"
             >
-              {loadingType === 'top_spot' ? '...' : 'I Want #1'}
+              {loadingType === 'top_spot' ? '...' : 'Take #1'}
             </button>
             <p className="text-[11px] text-[#9CA3AF] mt-2 text-center">
               Position not guaranteed to stay. We mentioned this.
