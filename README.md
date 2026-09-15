@@ -4,12 +4,12 @@
 
 ## Stack
 
-- **Next.js 14** (App Router)
-- **Supabase** (PostgreSQL + Realtime)
+- **Next.js** (App Router)
+- **PostgreSQL** (Raw SQL queries via `pg` driver)
 - **Paystack** (payments — international Visa/Mastercard)
-- **Resend** (transactional email)
+- **Nodemailer** (transactional email via Gmail SMTP)
 - **Vercel** (deployment)
-- **Tailwind CSS**
+- **Tailwind CSS v4**
 
 ---
 
@@ -25,26 +25,29 @@ npm install
 
 ### 2. Environment variables
 
-Copy `.env.example` to `.env.local` and fill in:
+Copy `.env.example` to `.env` and fill in:
 
 ```
-NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
-SUPABASE_SERVICE_ROLE_KEY=
-PAYSTACK_SECRET_KEY=
-NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY=
-RESEND_API_KEY=
+# Database
+DATABASE_URL=postgresql://postgres:password@localhost:5432/waityr_db
+
+# Paystack
+PAYSTACK_SECRET_KEY=sk_live_...
+NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY=pk_live_...
+
+# App URL
 NEXT_PUBLIC_APP_URL=http://localhost:3000
+
+# Email (Gmail)
+GMAIL_USER=your_email@gmail.com
+GMAIL_APP_PASSWORD=your_app_password
 ```
 
-### 3. Supabase setup
+### 3. Database setup (PostgreSQL)
 
-1. Create a new Supabase project at [supabase.com](https://supabase.com)
-2. Open the **SQL Editor**
-3. Paste and run the contents of `supabase-schema.sql`
-4. Enable **Realtime** for the `activity_feed` table:
-   - Go to Database → Replication
-   - Toggle on `activity_feed`
+1. Create a local PostgreSQL database (or use a provider like Neon/Render).
+2. Open your SQL client and connect to the database.
+3. Paste and run the contents of `schema.sql`.
 
 ### 4. Paystack setup
 
@@ -55,11 +58,12 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
    https://your-domain.com/api/payments/webhook
    ```
 
-### 5. Resend setup
+### 5. Email setup
 
-1. Create account at [resend.com](https://resend.com)
-2. Add and verify your sending domain
-3. Update the `FROM` address in `lib/resend.ts`
+1. Go to your Google Account Settings.
+2. Enable 2-Step Verification if it's not already on.
+3. Search for "App Passwords" and create a new one named "Waityr".
+4. Add the generated password to `GMAIL_APP_PASSWORD` in your `.env`.
 
 ### 6. Run locally
 
@@ -86,9 +90,48 @@ After deploying, update `NEXT_PUBLIC_APP_URL` to your production URL and redeplo
 
 ---
 
+## Definition of Done
+
+- [x] New user submits email → receives confirmation email (via Nodemailer)
+- [x] Dedicated `/joined` success page animates count-up correctly
+- [x] Confirmed user pays $1 → moved to random position (not #1, not lower)
+- [x] Confirmed user pays $3 → becomes #1 immediately
+- [x] Paying $3 while someone else is #1 leapfrogs them correctly
+- [x] Activity feed updates and polls latest activity
+- [x] Live counter on homepage polls every 30 seconds
+- [x] Dashboard shows live position
+- [x] Referral link moves referrer up 1 spot on use
+- [x] All emails send correctly via Gmail SMTP
+- [x] Paystack webhook verified with HMAC-SHA512 signature check
+- [x] Idempotency table prevents double-processing of webhooks
+- [x] Position mutations are atomic via PostgreSQL RPC (no duplicate positions ever)
+- [x] All FAQ copy is verbatim as specified
+- [x] Fully responsive (mobile-first)
+- [x] All copy matches the specified dry, deadpan tone exactly
+- [x] Deployable to Vercel with all environment variables set
+
+---
+
+## Architecture Notes
+
+### Atomicity
+
+All position mutations run through a PostgreSQL RPC (`join_waitlist`, `move_to_position`)
+that acquires transaction-level locks (`pg_advisory_xact_lock(1)`) before any reads or writes. This means
+position assignments are always sequential — no gaps, no duplicates, even under concurrent load.
+
+### Idempotency
+
+Paystack may fire webhooks multiple times for the same charge. Before processing
+any webhook, we `INSERT` the `reference` into `paystack_events`. If the insert
+fails (duplicate), we return `200 OK` immediately without processing. This is
+the only safe way to handle this.
+
+---
+
 ## System Message Cron (Optional)
 
-To generate system messages in the activity feed every 10 minutes, add a Vercel Cron Job:
+To generate satirical system messages in the activity feed every 10 minutes, you can add a Vercel Cron Job:
 
 ```json
 // vercel.json — add to existing config
@@ -102,93 +145,7 @@ To generate system messages in the activity feed every 10 minutes, add a Vercel 
 }
 ```
 
-Create `/app/api/cron/system-message/route.ts`:
-
-```ts
-import { NextResponse } from 'next/server';
-import { createServerClient } from '@/lib/supabase';
-
-export async function GET(req: Request) {
-  // Verify cron secret
-  const authHeader = req.headers.get('authorization');
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-    return new NextResponse('Unauthorized', { status: 401 });
-  }
-
-  const supabase = createServerClient();
-
-  const { count } = await supabase
-    .from('waitlist_entries')
-    .select('id', { count: 'exact', head: true });
-
-  const { data: topEntry } = await supabase
-    .from('waitlist_entries')
-    .select('joined_at')
-    .eq('position', 1)
-    .maybeSingle();
-
-  let text = `The list is quiet. ${count ?? 0} people are waiting. They seem fine.`;
-
-  if (topEntry) {
-    const ms = Date.now() - new Date(topEntry.joined_at).getTime();
-    const hours = (ms / (1000 * 60 * 60)).toFixed(1);
-    text = `The person at #1 has held their position for ${hours} hours. No comment.`;
-  }
-
-  await supabase.from('activity_feed').insert({
-    event_type: 'system',
-    display_text: text,
-  });
-
-  return NextResponse.json({ ok: true });
-}
-```
-
----
-
-## Definition of Done
-
-- [x] New user submits email → receives confirmation email
-- [x] Position reveal modal animates count-up correctly (800ms)
-- [x] Confirmed user pays $1 → moved to random position (not #1, not lower)
-- [x] Confirmed user pays $3 → becomes #1 immediately
-- [x] Paying $3 while someone else is #1 leapfrogs them correctly
-- [x] Activity feed updates in real time via Supabase Realtime
-- [x] Live counter on homepage polls every 30 seconds
-- [x] Dashboard shows live position (Supabase Realtime subscription)
-- [x] Referral link moves referrer up 1 spot on use
-- [x] All emails send correctly via Resend
-- [x] Paystack webhook verified with HMAC-SHA512 signature check
-- [x] Idempotency table prevents double-processing of webhooks
-- [x] Position mutations are atomic via Supabase RPC (no duplicate positions ever)
-- [x] All FAQ copy is verbatim as specified
-- [x] Fully responsive (mobile-first)
-- [x] All copy matches the specified dry, deadpan tone exactly
-- [x] Deployable to Vercel with all environment variables set
-
----
-
-## Architecture Notes
-
-### Atomicity
-
-All position mutations run through a Supabase PostgreSQL RPC (`move_to_position`)
-that acquires `pg_advisory_xact_lock(1)` before any reads or writes. This means
-position assignments are always sequential — no gaps, no duplicates, even under
-concurrent load.
-
-### Idempotency
-
-Paystack may fire webhooks multiple times for the same charge. Before processing
-any webhook, we `INSERT` the `reference` into `paystack_events`. If the insert
-fails (duplicate), we return `200 OK` immediately without processing. This is
-the only safe way to handle this.
-
-### Realtime
-
-The activity feed and dashboard position both subscribe to Supabase Realtime.
-The schema is set to `REPLICA IDENTITY FULL` on `activity_feed` so all column
-values are available in the change payload.
+The route at `/app/api/cron/system-message/route.ts` will query the database and automatically insert dry status updates into the feed (e.g. "The list is quiet. 142 people are waiting. They seem fine.")
 
 ---
 

@@ -23,40 +23,40 @@ function base(body: string): string {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Waityr</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,600;1,600&family=DM+Sans:wght@400;500;600;700&display=swap');
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; background: #f3f4f6; -webkit-font-smoothing: antialiased; }
+    body { font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif; background: #ffffff; -webkit-font-smoothing: antialiased; }
     .outer { padding: 40px 16px; }
-    .card { max-width: 540px; margin: 0 auto; background: #ffffff; border-radius: 16px; overflow: hidden; border: 1px solid #e5e7eb; }
-    .header { background: #0a0a0a; padding: 22px 36px; display: flex; align-items: center; justify-content: space-between; }
-    .logo { color: #ffffff; font-size: 17px; font-weight: 700; letter-spacing: -0.02em; }
-    .header-sub { color: #6b7280; font-size: 12px; }
-    .body { padding: 40px 36px 32px; }
-    .position-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #9ca3af; margin-bottom: 8px; }
-    .position { font-size: 88px; font-weight: 800; color: #0d9488; line-height: 1; letter-spacing: -0.04em; margin-bottom: 20px; }
-    .headline { font-size: 21px; font-weight: 700; color: #0a0a0a; line-height: 1.3; margin-bottom: 14px; letter-spacing: -0.01em; }
-    .body-text { font-size: 15px; color: #4b5563; line-height: 1.7; margin-bottom: 28px; }
+    .card { max-width: 540px; margin: 0 auto; background: #ffffff; }
+    .header { padding: 0 0 32px 0; border-bottom: 1px solid #f3f4f6; margin-bottom: 32px; text-align: center; }
+    .logo { font-family: 'Poppins', sans-serif; color: #0a0a0a; font-size: 24px; font-weight: 600; letter-spacing: -0.04em; text-decoration: none; }
+    .logo-y { font-style: italic; }
+    .body { padding: 0; text-align: center; }
+    .position-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #9ca3af; margin-bottom: 12px; }
+    .position { font-family: 'Poppins', sans-serif; font-size: 96px; font-weight: 600; color: #0d9488; line-height: 1; letter-spacing: -0.04em; margin-bottom: 24px; }
+    .headline { font-family: 'Poppins', sans-serif; font-size: 22px; font-weight: 600; color: #0a0a0a; line-height: 1.3; margin-bottom: 16px; letter-spacing: -0.02em; }
+    .body-text { font-size: 15px; color: #6b7280; line-height: 1.7; margin-bottom: 32px; text-align: left; }
     .body-text strong { color: #0a0a0a; font-weight: 600; }
-    .btn { display: inline-block; background: #0d9488; color: #ffffff !important; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-weight: 600; font-size: 15px; letter-spacing: -0.01em; }
-    .meta { margin-top: 28px; padding-top: 20px; border-top: 1px solid #f3f4f6; }
-    .meta p { font-size: 12px; color: #9ca3af; line-height: 1.6; }
-    .meta a { color: #0d9488; text-decoration: none; }
-    .footer { background: #f9fafb; border-top: 1px solid #f3f4f6; padding: 18px 36px; }
-    .footer p { font-size: 11px; color: #9ca3af; line-height: 1.5; }
+    .btn { display: inline-block; background: #0d9488; color: #ffffff !important; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-weight: 600; font-size: 15px; }
+    .meta { margin-top: 40px; padding-top: 24px; border-top: 1px solid #f3f4f6; text-align: left; }
+    .meta p { font-size: 13px; color: #9ca3af; line-height: 1.6; }
+    .meta a { color: #0d9488; text-decoration: underline; text-underline-offset: 2px; }
+    .footer { margin-top: 40px; padding-top: 24px; border-top: 1px solid #f3f4f6; text-align: center; }
+    .footer p { font-size: 12px; color: #9ca3af; line-height: 1.6; }
+    .footer a { color: #6b7280; text-decoration: none; }
   </style>
 </head>
 <body>
   <div class="outer">
     <div class="card">
       <div class="header">
-        <span class="logo">Waityr</span>
-        <span class="header-sub">The product is the waitlist.</span>
+        <a href="${APP_URL}" class="logo">Wait<span class="logo-y">y</span>r</a>
       </div>
       <div class="body">
         ${body}
       </div>
       <div class="footer">
-        <p>Waityr · Something is coming. · <a href="${APP_URL}" style="color:#0d9488;">waityr.vercel.app</a></p>
+        <p>© 2026 Waityr. Something is coming.<br/><a href="${APP_URL}" style="color:#6b7280;">waityr.vercel.app</a></p>
       </div>
     </div>
   </div>
