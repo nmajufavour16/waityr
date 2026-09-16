@@ -23,8 +23,8 @@ export async function GET() {
       ? maskEmail(topSpotData.email)
       : null;
 
-    // How long has #1 been waiting
-    const { rows: numberOneRows } = await db.query('SELECT joined_at FROM waitlist_entries WHERE position = 1 LIMIT 1');
+    // How long has #1 been waiting & their VIP profile
+    const { rows: numberOneRows } = await db.query('SELECT joined_at, name, x_handle FROM waitlist_entries WHERE position = 1 LIMIT 1');
     const numberOne = numberOneRows.length > 0 ? numberOneRows[0] : null;
 
     let numberOneTenureHours = 0;
@@ -40,6 +40,8 @@ export async function GET() {
         top_spot_record_purchases: topSpotRecordPurchases,
         top_spot_record_holder_masked_email: topSpotRecordMasked,
         number_one_tenure_hours: numberOneTenureHours,
+        number_one_name: numberOne?.name || null,
+        number_one_x_handle: numberOne?.x_handle || null,
       },
       {
         headers: {

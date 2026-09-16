@@ -28,13 +28,18 @@ async function getStats() {
     const { rows: topRows } = await db.query(
       'SELECT top_spot_count FROM waitlist_entries ORDER BY top_spot_count DESC LIMIT 1'
     );
+    const { rows: numberOneRows } = await db.query(
+      'SELECT name, x_handle FROM waitlist_entries WHERE position = 1 LIMIT 1'
+    );
     
     return { 
       total_waiters: parseInt(totalRows[0]?.exact || '0'), 
       total_revenue_cents: parseInt(revRows[0]?.total_spent || '0'), 
-      top_spot_record: topRows[0]?.top_spot_count || 0 
+      top_spot_record: topRows[0]?.top_spot_count || 0,
+      number_one_name: numberOneRows[0]?.name || null,
+      number_one_x_handle: numberOneRows[0]?.x_handle || null
     };
-  } catch { return { total_waiters: 0, total_revenue_cents: 0, top_spot_record: 0 }; }
+  } catch { return { total_waiters: 0, total_revenue_cents: 0, top_spot_record: 0, number_one_name: null, number_one_x_handle: null }; }
 }
 
 interface Props { searchParams: Promise<{ ref?: string; error?: string }> };
@@ -100,6 +105,19 @@ export default async function HomePage(props: Props) {
                 <div className="mt-6 anim-fade-up delay-4 flex justify-center">
                   <WaitlistForm referralCode={referralCode} />
                 </div>
+
+                {/* VIP Billboard */}
+                {(stats.number_one_name || stats.number_one_x_handle) && (
+                  <div className="mt-12 anim-fade-up delay-5 border border-[#0D9488]/20 bg-[#0D9488]/5 rounded-2xl p-6 max-w-sm mx-auto shadow-sm">
+                    <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#0D9488] mb-2">Current #1 VIP 👑</p>
+                    <p className="font-semibold text-lg text-[#0A0A0A] mb-1">{stats.number_one_name || 'Anonymous Alpha'}</p>
+                    {stats.number_one_x_handle && (
+                      <a href={`https://x.com/${stats.number_one_x_handle}`} target="_blank" rel="noopener noreferrer" className="text-sm font-medium text-[#0D9488] hover:underline">
+                        @{stats.number_one_x_handle}
+                      </a>
+                    )}
+                  </div>
+                )}
               </div>
 
 

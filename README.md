@@ -47,7 +47,7 @@ GMAIL_APP_PASSWORD=your_app_password
 
 1. Create a PostgreSQL database (locally or use a cloud provider like Neon/Aiven).
 2. Ensure your `DATABASE_URL` is set in your `.env` file.
-3. Paste and run the contents of `schema.sql` or Run the schema setup script: `node --env-file=.env setup-db.js`
+3. Paste and run the contents of `schema.sql` or Run the schema setup script: `node --env-file=.env db/setup-db.js`
 
 ### 4. Paystack setup
 
@@ -105,6 +105,7 @@ After deploying, update `NEXT_PUBLIC_APP_URL` to your production URL and redeplo
 - [x] Paystack webhook verified with HMAC-SHA512 signature check
 - [x] Idempotency table prevents double-processing of webhooks
 - [x] Position mutations are atomic via PostgreSQL RPC (no duplicate positions ever)
+- [x] VIP features: #1 buyers get a Crown 👑, VIP Lounge access, and a Profile Billboard ad
 - [x] All FAQ copy is verbatim as specified
 - [x] Fully responsive (mobile-first)
 - [x] All copy matches the specified dry, deadpan tone exactly
