@@ -7,7 +7,7 @@ export const revalidate = 30; // Next.js route cache: 30 seconds
 export async function GET() {
   try {
     // Total waiters
-    const { rows: countRows } = await db.query('SELECT COUNT(id) FROM waitlist_entries');
+    const { rows: countRows } = await db.query('SELECT COUNT(id) FROM waitlist_entries WHERE confirmed = true');
     const totalWaiters = parseInt(countRows[0].count || '0', 10);
 
     // Total revenue

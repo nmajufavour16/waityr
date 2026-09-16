@@ -3,7 +3,16 @@ import { z } from 'zod';
 import { db } from '@/lib/db';
 import { maskEmail } from '@/lib/positions';
 import { sendConfirmationEmail } from '@/lib/email';
+import { resolveMx } from 'dns/promises';
 
+async function hasValidMx(domain: string): Promise<boolean> {
+  try {
+    const records = await resolveMx(domain);
+    return records && records.length > 0;
+  } catch {
+    return false;
+  }
+}
 const joinSchema = z.object({
   email: z.string().email('Invalid email address.'),
   referral_code: z.string().optional(),
@@ -19,6 +28,16 @@ export async function POST(req: NextRequest) {
     }
     
     const { email, referral_code } = parseResult.data;
+
+    // Validate email domain MX records
+    const domain = email.split('@')[1];
+    const isValidDomain = await hasValidMx(domain);
+    if (!isValidDomain) {
+      return NextResponse.json(
+        { error: 'This email domain does not exist or cannot receive emails. Did you mistype it?' },
+        { status: 400 }
+      );
+    }
 
     const { rows: existingRows } = await db.query(
       'SELECT id, email, position FROM waitlist_entries WHERE email = $1 LIMIT 1',
