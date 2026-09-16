@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import useSWR from 'swr';
 // Types should ideally be shared, but since we removed supabase we'll define ActivityFeedItem locally if needed, or import from a shared file.
 // Wait, we need to define ActivityFeedItem since we removed it from supabase.ts.
@@ -257,8 +258,18 @@ export default function DashboardClient({ entry, initialFeedItems }: Props) {
         {/* Header row */}
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-semibold text-[#0A0A0A] tracking-tight font-display">Your spot.</h1>
+            <h1 className="text-2xl font-semibold text-[#0A0A0A] tracking-tight font-display flex items-center gap-2">
+              Your spot.
+              {entry.top_spot_count > 0 && (
+                <span title="VIP Crown Holder" className="text-xl">👑</span>
+              )}
+            </h1>
             <p className="text-sm text-[#6B7280] mt-1">{entry.email}</p>
+            {entry.top_spot_count > 0 && (
+              <Link href="/vip" className="inline-block mt-3 text-xs font-semibold bg-black text-white px-3 py-1.5 rounded-md hover:bg-gray-800 transition-colors">
+                Enter VIP Lounge →
+              </Link>
+            )}
           </div>
         </div>
 

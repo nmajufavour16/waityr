@@ -17,7 +17,9 @@ CREATE TABLE waitlist_entries (
   bump_count         INTEGER NOT NULL DEFAULT 0,
   top_spot_count     INTEGER NOT NULL DEFAULT 0,
   referral_code      TEXT UNIQUE DEFAULT substring(md5(random()::text), 1, 8),
-  referred_by        UUID REFERENCES waitlist_entries(id)
+  referred_by        UUID REFERENCES waitlist_entries(id),
+  name               TEXT,
+  x_handle           TEXT
 );
 
 CREATE INDEX idx_waitlist_position ON waitlist_entries(position);

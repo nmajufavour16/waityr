@@ -213,3 +213,42 @@ export async function sendDisplacedFromTopEmail({
     html,
   });
 }
+
+// ─── Admin Drafted Tweet (sent to owner) ──────────────────────────────────────
+export async function sendAdminTweetDraftEmail({
+  name,
+  x_handle,
+}: {
+  name: string;
+  x_handle: string;
+}) {
+  // Replace missing details with placeholders
+  const safeName = name || 'Someone';
+  const safeHandle = x_handle ? (x_handle.startsWith('@') ? x_handle : `@${x_handle}`) : '';
+
+  const html = base(`
+    <p class="position-label">Action Required</p>
+    <h1 class="headline">New #1 VIP!</h1>
+    <p class="body-text">
+      A user has just paid $2.99 and claimed the top spot. They have filled out their VIP profile.
+      <br/><br/>
+      <strong>Name:</strong> ${safeName}<br/>
+      <strong>X Handle:</strong> ${safeHandle || 'None provided'}<br/>
+      <br/>
+      Here is your drafted tweet to post in the Waityr brand voice:
+    </p>
+    <div style="background:#f3f4f6; padding:16px; border-radius:8px; margin-bottom:24px; font-family:monospace; font-size:14px; color:#0a0a0a;">
+      We have a new #1 on the waitlist.<br/><br/>
+      Congratulations to ${safeName} ${safeHandle}. You paid $2.99 for absolutely nothing, proving your financial superiority to everyone else.<br/><br/>
+      The waitlist is the product. Link in bio.
+    </div>
+    <p class="body-text">Copy the text above and post it to X.</p>
+  `);
+
+  await transporter.sendMail({
+    from: FROM,
+    to: 'nmajufavour16@gmail.com',
+    subject: `[Waityr] New VIP - Tweet Draft Ready`,
+    html,
+  });
+}
