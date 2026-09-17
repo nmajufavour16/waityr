@@ -1,8 +1,6 @@
 import nodemailer from 'nodemailer';
 
 // ─── Transport ────────────────────────────────────────────────────────────────
-// Credentials come from environment variables only — never hardcode these.
-// Add GMAIL_USER and GMAIL_APP_PASSWORD to Vercel → Settings → Environment Variables.
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -96,6 +94,40 @@ export async function sendConfirmationEmail({
     from: FROM,
     to,
     subject: `You're #${position}. Confirm before someone passes you.`,
+    html,
+  });
+}
+
+// ─── Reminder email (sent via cron) ───────────────────────────────────────────
+export async function sendReminderEmail({
+  to,
+  position,
+  confirmationToken,
+}: {
+  to: string;
+  position: number;
+  confirmationToken: string;
+}) {
+  const confirmUrl = `${APP_URL}/api/auth/confirm?token=${confirmationToken}`;
+
+  const html = base(`
+    <p class="position-label">Your position</p>
+    <div class="position">#${position}</div>
+    <h1 class="headline">You haven't confirmed your spot!</h1>
+    <p class="body-text">
+      You joined the Waityr queue 24 hours ago at <strong>#${position}</strong>, but you still haven't confirmed your email address.<br/><br/>
+      If you don't confirm, you won't be able to log in, access your dashboard, or move up the list. Other people are passing you while you wait.
+    </p>
+    <a class="btn" href="${confirmUrl}">Confirm my spot →</a>
+    <div class="meta">
+      <p>If you didn't sign up for Waityr, you can safely ignore this. Your email won't be used for anything else.</p>
+    </div>
+  `);
+
+  await transporter.sendMail({
+    from: FROM,
+    to,
+    subject: `Reminder: You're #${position}. Confirm your spot.`,
     html,
   });
 }
