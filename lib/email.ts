@@ -251,8 +251,8 @@ export async function sendAdminTweetDraftEmail({
   name,
   x_handle,
 }: {
-  name: string;
-  x_handle: string;
+  name: string | null | undefined;
+  x_handle: string | null | undefined;
 }) {
   // Replace missing details with placeholders
   const safeName = name || 'Someone';
@@ -262,7 +262,7 @@ export async function sendAdminTweetDraftEmail({
     <p class="position-label">Action Required</p>
     <h1 class="headline">New #1 VIP!</h1>
     <p class="body-text">
-      A user has just paid $2.99 and claimed the top spot. They have filled out their VIP profile.
+      A user has just paid $2.99 and claimed the top spot. They have updated their VIP profile.
       <br/><br/>
       <strong>Name:</strong> ${safeName}<br/>
       <strong>X Handle:</strong> ${safeHandle || 'None provided'}<br/>
