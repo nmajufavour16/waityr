@@ -80,7 +80,7 @@ export async function sendConfirmationEmail({
     <div class="position">#${position}</div>
     <h1 class="headline">You're in the queue.<br/>Confirm before someone passes you.</h1>
     <p class="body-text">
-      You joined at <strong>#${position}</strong>${ahead > 0 ? `, ahead of ${ahead.toLocaleString()} ${ahead === 1 ? 'person' : 'people'} who came after you` : ''}.<br/><br/>
+      You joined at <strong>#${position}</strong>${ahead > 0 ? `, behind ${ahead.toLocaleString()} ${ahead === 1 ? 'person' : 'people'} who joined before you` : ''}.<br/><br/>
       Your position is already moving. People are joining, bumping up, and competing for #1 right now.
       Confirm your spot to lock in access to your dashboard. There, you can pay $1 to move up randomly, or $2.99 to go straight to #1.
     </p>
