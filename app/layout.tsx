@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://waityr.vercel.app'),
   title: 'Waityr — Queue as a Service',
   description:
     "A waitlist for something. Get in line.",
@@ -11,20 +12,11 @@ export const metadata: Metadata = {
     url: 'https://waityr.vercel.app',
     siteName: 'Waityr',
     type: 'website',
-    images: [
-      {
-        url: 'https://waityr.vercel.app/logo.png',
-        width: 1080,
-        height: 1080,
-        alt: 'Waityr — Queue as a Service',
-      },
-    ],
   },
   twitter: {
-    card: 'summary',
+    card: 'summary_large_image',
     title: 'Waityr — Queue as a Service',
     description: "A waitlist for something. Get in line.",
-    images: ['https://waityr.vercel.app/logo.png'],
   },
   verification: {
     google: 'zy6RrKC1-qHSR4tunhNMhJ92mZ37PM3bS4ehflbSAZI',
