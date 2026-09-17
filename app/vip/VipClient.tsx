@@ -45,7 +45,6 @@ export default function VipClient({ initialName, initialHandle }: { initialName:
           onChange={(e) => setName(e.target.value)}
           placeholder="e.g. Satoshi Nakamoto"
           className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white/30"
-          required
         />
       </div>
       <div>

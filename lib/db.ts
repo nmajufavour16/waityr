@@ -1,6 +1,6 @@
 import { Pool, QueryResult, QueryResultRow } from 'pg';
 
-const connectionString = process.env.DATABASE_URL;
+const connectionString = process.env.DATABASE_URL?.replace('?sslmode=require', '');
 
 const pool = new Pool({
   connectionString,

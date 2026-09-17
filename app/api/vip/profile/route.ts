@@ -5,8 +5,8 @@ import { cookies } from 'next/headers';
 import { sendAdminTweetDraftEmail } from '@/lib/email';
 
 const profileSchema = z.object({
-  name: z.string().min(1, 'Name is required').max(50),
-  x_handle: z.string().max(30).optional(),
+  name: z.string().max(50).optional().nullable().transform(v => v === '' ? null : v),
+  x_handle: z.string().max(30).optional().nullable().transform(v => v === '' ? null : v),
 });
 
 export async function POST(req: NextRequest) {
@@ -38,9 +38,12 @@ export async function POST(req: NextRequest) {
     }
 
     // Clean up handle
-    let cleanHandle = x_handle?.trim() || '';
-    if (cleanHandle.startsWith('@')) {
-      cleanHandle = cleanHandle.substring(1);
+    let cleanHandle: string | null = null;
+    if (x_handle) {
+      cleanHandle = x_handle.trim();
+      if (cleanHandle.startsWith('@')) {
+        cleanHandle = cleanHandle.substring(1);
+      }
     }
 
     // Update database
