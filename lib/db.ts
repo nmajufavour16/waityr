@@ -1,10 +1,10 @@
 import { Pool, QueryResult, QueryResultRow } from 'pg';
 
-const connectionString = process.env.DATABASE_URL?.replace('?sslmode=require', '');
+const connectionString = process.env.DATABASE_URL;
 
 const pool = new Pool({
   connectionString,
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : undefined,
+  ssl: connectionString?.includes('localhost') ? undefined : { rejectUnauthorized: false },
 });
 
 export interface WaitlistEntry extends QueryResultRow {

@@ -19,7 +19,10 @@ CREATE TABLE waitlist_entries (
   referral_code      TEXT UNIQUE DEFAULT substring(md5(random()::text), 1, 8),
   referred_by        UUID REFERENCES waitlist_entries(id),
   name               TEXT,
-  x_handle           TEXT
+  x_handle           TEXT,
+  CONSTRAINT chk_vip_profile CHECK (
+    (name IS NULL AND x_handle IS NULL) OR (top_spot_count > 0)
+  )
 );
 
 CREATE INDEX idx_waitlist_position ON waitlist_entries(position);
