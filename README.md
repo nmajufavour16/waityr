@@ -110,6 +110,7 @@ After deploying, update `NEXT_PUBLIC_APP_URL` to your production URL and redeplo
 - [x] Fully responsive (mobile-first)
 - [x] All copy matches the specified dry, deadpan tone exactly
 - [x] Deployable to Vercel with all environment variables set
+- [x] 24-hour unconfirmed user reminder emails automated via Vercel Cron
 
 ---
 
@@ -130,9 +131,9 @@ the only safe way to handle this.
 
 ---
 
-## System Message Cron (Optional)
+## Cron Jobs
 
-To generate satirical system messages in the activity feed once a day (to comply with Vercel Hobby limits), you can add a Vercel Cron Job:
+To generate satirical system messages in the activity feed and send out 24-hour automated reminder emails to unconfirmed users, we use Vercel Cron Jobs:
 
 ```json
 // vercel.json — add to existing config
@@ -141,6 +142,10 @@ To generate satirical system messages in the activity feed once a day (to comply
     {
       "path": "/api/cron/system-message",
       "schedule": "0 0 * * *"
+    },
+    {
+      "path": "/api/cron/reminder",
+      "schedule": "0 1 * * *"
     }
   ]
 }

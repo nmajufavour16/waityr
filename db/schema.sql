@@ -1,8 +1,3 @@
--- =============================================================
--- Waityr — Supabase Schema
--- Run this in Supabase SQL Editor before deploying the app.
--- =============================================================
-
 -- ---------------------------------------------------------------
 -- waitlist_entries
 -- ---------------------------------------------------------------
@@ -12,6 +7,7 @@ CREATE TABLE waitlist_entries (
   position           INTEGER NOT NULL,
   joined_at          TIMESTAMPTZ NOT NULL DEFAULT now(),
   confirmed          BOOLEAN NOT NULL DEFAULT false,
+  reminder_sent      BOOLEAN NOT NULL DEFAULT false,
   confirmation_token UUID DEFAULT gen_random_uuid(),
   total_spent_cents  INTEGER NOT NULL DEFAULT 0,
   bump_count         INTEGER NOT NULL DEFAULT 0,

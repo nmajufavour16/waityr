@@ -1,8 +1,6 @@
 import nodemailer from 'nodemailer';
 
 // ─── Transport ────────────────────────────────────────────────────────────────
-// Credentials come from environment variables only — never hardcode these.
-// Add GMAIL_USER and GMAIL_APP_PASSWORD to Vercel → Settings → Environment Variables.
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -82,7 +80,7 @@ export async function sendConfirmationEmail({
     <div class="position">#${position}</div>
     <h1 class="headline">You're in the queue.<br/>Confirm before someone passes you.</h1>
     <p class="body-text">
-      You joined at <strong>#${position}</strong>${ahead > 0 ? `, ahead of ${ahead.toLocaleString()} ${ahead === 1 ? 'person' : 'people'} who came after you` : ''}.<br/><br/>
+      You joined at <strong>#${position}</strong>${ahead > 0 ? `, behind ${ahead.toLocaleString()} ${ahead === 1 ? 'person' : 'people'} who joined before you` : ''}.<br/><br/>
       Your position is already moving. People are joining, bumping up, and competing for #1 right now.
       Confirm your spot to lock in access to your dashboard. There, you can pay $1 to move up randomly, or $2.99 to go straight to #1.
     </p>
@@ -96,6 +94,40 @@ export async function sendConfirmationEmail({
     from: FROM,
     to,
     subject: `You're #${position}. Confirm before someone passes you.`,
+    html,
+  });
+}
+
+// ─── Reminder email (sent via cron) ───────────────────────────────────────────
+export async function sendReminderEmail({
+  to,
+  position,
+  confirmationToken,
+}: {
+  to: string;
+  position: number;
+  confirmationToken: string;
+}) {
+  const confirmUrl = `${APP_URL}/api/auth/confirm?token=${confirmationToken}`;
+
+  const html = base(`
+    <p class="position-label">Your position</p>
+    <div class="position">#${position}</div>
+    <h1 class="headline">You haven't confirmed your spot!</h1>
+    <p class="body-text">
+      You joined the Waityr queue 24 hours ago at <strong>#${position}</strong>, but you still haven't confirmed your email address.<br/><br/>
+      If you don't confirm, you won't be able to log in, access your dashboard, or move up the list. Other people are passing you while you wait.
+    </p>
+    <a class="btn" href="${confirmUrl}">Confirm my spot →</a>
+    <div class="meta">
+      <p>If you didn't sign up for Waityr, you can safely ignore this. Your email won't be used for anything else.</p>
+    </div>
+  `);
+
+  await transporter.sendMail({
+    from: FROM,
+    to,
+    subject: `Reminder: You're #${position}. Confirm your spot.`,
     html,
   });
 }
@@ -219,8 +251,8 @@ export async function sendAdminTweetDraftEmail({
   name,
   x_handle,
 }: {
-  name: string;
-  x_handle: string;
+  name: string | null | undefined;
+  x_handle: string | null | undefined;
 }) {
   // Replace missing details with placeholders
   const safeName = name || 'Someone';
@@ -230,7 +262,7 @@ export async function sendAdminTweetDraftEmail({
     <p class="position-label">Action Required</p>
     <h1 class="headline">New #1 VIP!</h1>
     <p class="body-text">
-      A user has just paid $2.99 and claimed the top spot. They have filled out their VIP profile.
+      A user has just paid $2.99 and claimed the top spot. They have updated their VIP profile.
       <br/><br/>
       <strong>Name:</strong> ${safeName}<br/>
       <strong>X Handle:</strong> ${safeHandle || 'None provided'}<br/>
